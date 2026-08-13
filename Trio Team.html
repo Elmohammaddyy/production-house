@@ -1,0 +1,850 @@
+<!-- Team -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meet Our Team — Trio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* Roc Grotesk is a licensed font — host the actual files (woff2/woff) somewhere
+       on your server or CDN and point the src below at them. Until then, the
+       fallbacks (system sans-serif) will be used automatically. */
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Regular.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Medium.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Bold.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* =====================
+       PAGE-LEVEL TOKENS
+       Prefixed with .tm- so nothing leaks to/from other pages
+       Matched to the Production House palette
+    ===================== */
+    :root {
+      --tm-bg:     #d8d0bd;
+      --tm-ink:    #303030;
+      --tm-cream:  #f4f1e8;
+      --tm-orange: #c5630a;
+      --tm-muted:  rgba(48,48,48,0.55);
+      --tm-card:   #f4f1e8;
+      --tm-line:   rgba(48,48,48,0.12);
+      --tm-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    html, body {
+      background: var(--tm-bg);
+      color: var(--tm-ink);
+      font-family: 'Roc Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; }
+
+    a { color: inherit; }
+
+    /* =====================
+       NAVBAR
+    ===================== */
+    .tm-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(216, 208, 189, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(48,48,48,0.08);
+      transition: background 0.3s, padding 0.3s;
+    }
+    .tm-nav.scrolled {
+      background: rgba(216, 208, 189, 0.97);
+      padding: 14px 40px;
+    }
+    .tm-nav__brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--tm-ink);
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      touch-action: manipulation;
+    }
+    .tm-nav__logo {
+      width: 26px; height: 26px;
+      background: var(--tm-orange);
+      color: var(--tm-cream);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .tm-nav__back {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--tm-ink);
+      text-decoration: none; opacity: 0.7;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, gap 0.2s;
+      padding: 10px 4px;
+      touch-action: manipulation;
+      white-space: nowrap;
+    }
+
+    /* =====================
+       HERO BANNER
+    ===================== */
+    .tm-hero {
+      position: relative;
+      height: 60vh; min-height: 320px;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .tm-hero__bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 8s ease-out;
+    }
+    .tm-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(48,48,48,0.35) 0%, rgba(48,48,48,0.75) 60%, var(--tm-bg) 100%);
+    }
+    .tm-hero__content {
+      position: relative; z-index: 2;
+      padding: 0 48px 56px;
+      max-width: 100%;
+    }
+    .tm-hero__eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--tm-orange); margin-bottom: 12px;
+    }
+    .tm-hero__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 12vw, 120px);
+      line-height: 0.95; letter-spacing: 0.01em;
+      color: var(--tm-cream);
+    }
+    .tm-hero__sub {
+      margin-top: 16px;
+      font-size: 14px; line-height: 1.6;
+      color: var(--tm-cream); opacity: 0.85;
+      max-width: 480px;
+    }
+
+    /* =====================
+       SECTION INTRO
+    ===================== */
+    .tm-intro {
+      max-width: 760px;
+      margin: 80px auto 0;
+      padding: 0 32px;
+      text-align: center;
+    }
+    .tm-intro__label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--tm-orange); margin-bottom: 20px;
+    }
+    .tm-intro__heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(30px, 8vw, 60px);
+      line-height: 1.05; color: var(--tm-ink);
+      margin-bottom: 20px;
+    }
+    .tm-intro__body {
+      font-size: 14px; line-height: 1.8;
+      color: var(--tm-ink); opacity: 0.72;
+    }
+
+    /* =====================
+       DIVIDER
+    ===================== */
+    .tm-divider {
+      width: 48px; height: 1px;
+      background: var(--tm-orange);
+      margin: 40px auto;
+      opacity: 0.8;
+    }
+
+    /* =====================
+       TEAM GRID
+    ===================== */
+    .tm-grid-section {
+      padding: 0 32px 100px;
+    }
+    .tm-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 480px;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    /* second card of each row of 3 — offset, kept from original rhythm */
+    .tm-card:nth-child(3n+2) { margin-top: 60px; }
+
+    /* =====================
+       CARD — full-bleed, rounded, image + overlay + bottom text
+       (matches the Trio Studio service cards)
+       Info reveal is driven by the shared .tm-card--open state, which is
+       toggled by real :hover (mouse only) or by a tap on touch devices.
+    ===================== */
+    .tm-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #2a2a2a;
+      cursor: pointer;
+      height: 100%;
+      transition: transform 0.45s var(--tm-ease);
+      touch-action: manipulation;
+    }
+
+    .tm-card__photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+    }
+    .tm-card__photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: brightness(0.88);
+      transition: transform 0.7s var(--tm-ease), filter 0.5s;
+    }
+
+    /* gradient overlay */
+    .tm-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20,18,14,0.92) 0%,
+        rgba(20,18,14,0.55) 35%,
+        rgba(20,18,14,0.12) 65%,
+        transparent 100%
+      );
+      z-index: 1;
+      transition: opacity 0.4s;
+    }
+
+    /* orange accent line sweeps across bottom when open */
+    .tm-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--tm-orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s var(--tm-ease);
+      z-index: 4;
+      border-radius: 0 0 20px 20px;
+    }
+
+    /* card number badge */
+    .tm-card__num {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 12px; letter-spacing: 0.22em;
+      color: var(--tm-cream); opacity: 0;
+      z-index: 3;
+      transition: opacity 0.3s;
+    }
+
+    /* card info — pinned to bottom */
+    .tm-card__info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 28px 32px;
+      z-index: 2;
+    }
+
+    .tm-card__role {
+      display: block;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--tm-orange);
+      margin-bottom: 8px;
+    }
+
+    .tm-card__name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px; letter-spacing: 0.06em;
+      line-height: 1.1;
+      color: var(--tm-cream);
+      text-transform: uppercase;
+      margin-bottom: 0;
+      position: relative; display: inline-block;
+      transition: margin-bottom 0.3s;
+    }
+    .tm-card__name::after {
+      content: ''; position: absolute; left: 0; bottom: -6px;
+      width: 0; height: 2px; background: var(--tm-orange);
+      transition: width 0.4s var(--tm-ease);
+    }
+
+    .tm-card__bio {
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: rgba(244,241,232,0.8);
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s var(--tm-ease), opacity 0.35s, margin-bottom 0.4s var(--tm-ease);
+      opacity: 0;
+      margin-bottom: 0;
+    }
+
+    .tm-card__contact {
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: rgba(244,241,232,0.65);
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s var(--tm-ease) 0.05s, opacity 0.35s 0.05s;
+      opacity: 0;
+    }
+    .tm-card__contact a {
+      color: var(--tm-orange);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      /* extra tap padding so the phone number/email is easy to hit on touch */
+      display: inline-block;
+      padding: 2px 0;
+    }
+
+    /* -----------------------------------------------------------
+       Shared "open" state — applied to .tm-card--open by JS (tap,
+       any pointer type) AND to .tm-card:hover on mouse-capable
+       devices only. Keeping these separate stops touchscreens from
+       getting stuck in a "hover" state after a tap. */
+    .tm-card.tm-card--open { transform: translateY(-8px); }
+    .tm-card.tm-card--open .tm-card__photo img { transform: scale(1.06); filter: brightness(1); }
+    .tm-card.tm-card--open::before { transform: scaleX(1); }
+    .tm-card.tm-card--open .tm-card__num { opacity: 0.7; }
+    .tm-card.tm-card--open .tm-card__name::after { width: 100%; }
+    .tm-card.tm-card--open .tm-card__name { margin-bottom: 14px; }
+    .tm-card.tm-card--open .tm-card__bio { max-height: 160px; opacity: 1; margin-bottom: 12px; }
+    .tm-card.tm-card--open .tm-card__contact { max-height: 60px; opacity: 1; }
+    .tm-card.tm-card--open .tm-card__contact a { border-color: var(--tm-orange); }
+
+    /* Mouse/trackpad devices: keep the classic hover behaviour too */
+    @media (hover: hover) and (pointer: fine) {
+      .tm-hero__bg { transition: transform 8s ease-out; }
+      .tm-hero:hover .tm-hero__bg { transform: scale(1.04); }
+      .tm-card:hover { transform: translateY(-8px); }
+      .tm-card:hover .tm-card__photo img { transform: scale(1.06); filter: brightness(1); }
+      .tm-card:hover::before { transform: scaleX(1); }
+      .tm-card:hover .tm-card__num { opacity: 0.7; }
+      .tm-card:hover .tm-card__name::after { width: 100%; }
+      .tm-card:hover .tm-card__name { margin-bottom: 14px; }
+      .tm-card:hover .tm-card__bio { max-height: 160px; opacity: 1; margin-bottom: 12px; }
+      .tm-card:hover .tm-card__contact { max-height: 60px; opacity: 1; }
+      .tm-card:hover .tm-card__contact a:hover { border-color: var(--tm-orange); }
+      .tm-nav__back:hover { opacity: 1; gap: 12px; color: var(--tm-orange); }
+      .tm-footer a:hover { color: var(--tm-orange); }
+    }
+
+    /* Small "tap for details" hint shown only on touch devices, on cards that
+       haven't been opened yet, so people know the card is interactive. */
+    .tm-card__hint {
+      display: none;
+      position: absolute;
+      bottom: 12px; right: 12px;
+      z-index: 3;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(20,18,14,0.55);
+      color: var(--tm-cream);
+      align-items: center; justify-content: center;
+      font-size: 13px;
+      opacity: 0.9;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    body.tm-touch .tm-card__hint { display: flex; }
+    body.tm-touch .tm-card.tm-card--open .tm-card__hint { opacity: 0; transform: scale(0.6) rotate(45deg); }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    .tm-footer {
+      border-top: 1px solid var(--tm-line);
+      padding: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--tm-muted);
+    }
+    .tm-footer a {
+      color: var(--tm-ink); text-decoration: none;
+      font-weight: 600; letter-spacing: 0.08em;
+      transition: color 0.2s;
+      padding: 6px 2px;
+      display: inline-block;
+    }
+
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
+    .tm-reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s var(--tm-ease);
+    }
+    .tm-reveal.tm-visible { opacity: 1; transform: translateY(0); }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 900px) {
+      .tm-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 400px;
+        gap: 12px;
+      }
+      .tm-card:nth-child(3n+2) { margin-top: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .tm-nav { padding: 16px 20px; }
+      .tm-nav.scrolled { padding: 12px 20px; }
+      .tm-nav__back-text { display: none; }
+      .tm-nav__back { gap: 0; font-size: 16px; padding: 8px; opacity: 0.85; }
+      .tm-hero { min-height: 280px; }
+      .tm-hero__content { padding: 0 20px 32px; }
+      .tm-hero__sub { max-width: 100%; }
+      .tm-intro { margin-top: 56px; padding: 0 20px; }
+      .tm-grid { grid-template-columns: 1fr; grid-auto-rows: 340px; gap: 14px; }
+      .tm-grid-section { padding: 0 16px 56px; }
+      .tm-card__info { padding: 22px 22px 26px; }
+      .tm-card__bio { font-size: 13px; }
+      .tm-footer { padding: 24px 16px; }
+    }
+
+    @media (max-width: 360px) {
+      .tm-hero__title { font-size: clamp(38px, 13vw, 60px); }
+      .tm-grid { grid-auto-rows: 300px; }
+    }
+
+    /* Respect users who've asked for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .tm-reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="tm-nav" id="tmNav">
+    <a href="index.html" class="tm-nav__brand">
+      <span class="tm-nav__logo">t</span>
+      Trio
+    </a>
+    <a href="Trio.0.html" class="tm-nav__back" aria-label="Back to Services">
+      <i class="fa-solid fa-arrow-left"></i> <span class="tm-nav__back-text">Back to Services</span>
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="tm-hero">
+    <img src="team-hero.jpg" alt="Trio production crew on set" class="tm-hero__bg" />
+    <div class="tm-hero__overlay"></div>
+    <div class="tm-hero__content">
+      <p class="tm-hero__eyebrow">Creative Minds Behind</p>
+      <h1 class="tm-hero__title">Meet Our<br>Team</h1>
+      <p class="tm-hero__sub">The people who take every project from concept to final delivery, on set and off.</p>
+    </div>
+  </header>
+
+  <!-- Intro -->
+  <div class="tm-intro tm-reveal">
+    <p class="tm-intro__label">Our Team</p>
+    <h2 class="tm-intro__heading">Dedicated Professionals</h2>
+    <p class="tm-intro__body">
+      Our talented team comprises dedicated professionals with a passion for storytelling and visual
+      excellence, ensuring each project is executed with precision and creativity.
+    </p>
+  </div>
+
+  <div class="tm-divider"></div>
+
+  <!-- Team Grid -->
+  <section class="tm-grid-section">
+    <div class="tm-grid">
+
+      <!-- Card 1 -->
+      <article class="tm-card tm-reveal">
+        <div class="tm-card__photo">
+          <img src="alexandra.jpg" alt="Alexandra Green, Creative Director" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">01</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Creative Director</span>
+          <h3 class="tm-card__name">Alexandra Green</h3>
+          <p class="tm-card__bio">Alexandra leads the team with innovative ideas and a keen eye for detail, ensuring each project exceeds client expectations.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.08s">
+        <div class="tm-card__photo">
+          <img src="michael.jpg" alt="Michael Rodriguez, Lead Cinematographer" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">02</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Lead Cinematographer</span>
+          <h3 class="tm-card__name">Michael Rodriguez</h3>
+          <p class="tm-card__bio">Michael brings a wealth of experience and artistic flair to every shoot, capturing moments that resonate with audiences.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.16s">
+        <div class="tm-card__photo">
+          <img src="priya.jpg" alt="Priya Patel, Sound Specialist" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">03</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Sound Specialist</span>
+          <h3 class="tm-card__name">Priya Patel</h3>
+          <p class="tm-card__bio">Priya adds depth and emotion to every production through expert sound design, ensuring the audio experience is as impactful as the visuals.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.24s">
+        <div class="tm-card__photo">
+          <img src="daniel.jpg" alt="Daniel Osei, Editor" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">04</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Lead Editor</span>
+          <h3 class="tm-card__name">Daniel Osei</h3>
+          <p class="tm-card__bio">Daniel shapes raw footage into a finished story, balancing pacing, rhythm, and tone across every cut he touches.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.32s">
+        <div class="tm-card__photo">
+          <img src="sofia.jpg" alt="Sofia Marín, Producer" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">05</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Producer</span>
+          <h3 class="tm-card__name">Sofia Marín</h3>
+          <p class="tm-card__bio">Sofia keeps every production on schedule and on budget, coordinating crews, clients, and logistics from first call to wrap.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.4s">
+        <div class="tm-card__photo">
+          <img src="james.jpg" alt="James Whitfield, Gaffer" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">06</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Gaffer</span>
+          <h3 class="tm-card__name">James Whitfield</h3>
+          <p class="tm-card__bio">James designs and executes lighting for every set, shaping mood and depth long before a single frame is edited.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.48s">
+        <div class="tm-card__photo">
+          <img src="lena.jpg" alt="Lena Kowalski, Art Director" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">07</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Art Director</span>
+          <h3 class="tm-card__name">Lena Kowalski</h3>
+          <p class="tm-card__bio">Lena builds the visual world of each project, from set design to props, so every frame feels intentional.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.56s">
+        <div class="tm-card__photo">
+          <img src="marcus.jpg" alt="Marcus Chen, Colorist" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">08</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Colorist</span>
+          <h3 class="tm-card__name">Marcus Chen</h3>
+          <p class="tm-card__bio">Marcus grades every project's final look, tuning color and contrast until each shot matches the director's vision.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 9 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.64s">
+        <div class="tm-card__photo">
+          <img src="hana.jpg" alt="Hana Yamada, Production Coordinator" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">09</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Production Coordinator</span>
+          <h3 class="tm-card__name">Hana Yamada</h3>
+          <p class="tm-card__bio">Hana handles the details that keep a shoot day running smoothly, from permits and call sheets to on-set support.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 10 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.72s">
+        <div class="tm-card__photo">
+          <img src="oliver.jpg" alt="Oliver Bennett, Script Supervisor" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">10</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Script Supervisor</span>
+          <h3 class="tm-card__name">Oliver Bennett</h3>
+          <p class="tm-card__bio">Oliver tracks continuity shot by shot, keeping every take, prop, and line consistent from the first slate to the last.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 11 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.8s">
+        <div class="tm-card__photo">
+          <img src="ines.jpg" alt="Inès Dubois, Costume Designer" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">11</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Costume Designer</span>
+          <h3 class="tm-card__name">Inès Dubois</h3>
+          <p class="tm-card__bio">Inès dresses every character with intention, using wardrobe to tell story and build the world scene by scene.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 12 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.88s">
+        <div class="tm-card__photo">
+          <img src="ravi.jpg" alt="Ravi Shankar, Drone Operator" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">12</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Drone Operator</span>
+          <h3 class="tm-card__name">Ravi Shankar</h3>
+          <p class="tm-card__bio">Ravi captures aerial footage that gives every production scale, flying tight in tricky locations with a steady hand.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 13 -->
+      <article class="tm-card tm-reveal" style="transition-delay:0.96s">
+        <div class="tm-card__photo">
+          <img src="grace.jpg" alt="Grace Okafor, Casting Director" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">13</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Casting Director</span>
+          <h3 class="tm-card__name">Grace Okafor</h3>
+          <p class="tm-card__bio">Grace finds the right face for every role, running auditions and callbacks until the cast feels inevitable.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 14 -->
+      <article class="tm-card tm-reveal" style="transition-delay:1.04s">
+        <div class="tm-card__photo">
+          <img src="theo.jpg" alt="Theo Larsen, Motion Graphics Designer" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">14</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Motion Graphics Designer</span>
+          <h3 class="tm-card__name">Theo Larsen</h3>
+          <p class="tm-card__bio">Theo builds titles, lower thirds, and animated sequences that carry a project's identity from open to close.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 15 -->
+      <article class="tm-card tm-reveal" style="transition-delay:1.12s">
+        <div class="tm-card__photo">
+          <img src="nadia.jpg" alt="Nadia Petrova, Client Relations Lead" loading="lazy" />
+        </div>
+        <div class="tm-card__overlay"></div>
+        <span class="tm-card__num">15</span>
+        <span class="tm-card__hint"><i class="fa-solid fa-plus"></i></span>
+        <div class="tm-card__info">
+          <span class="tm-card__role">Client Relations Lead</span>
+          <h3 class="tm-card__name">Nadia Petrova</h3>
+          <p class="tm-card__bio">Nadia is the first and last point of contact for every client, translating their vision into a brief the team can run with.</p>
+          <div class="tm-card__contact">
+            <a href="mailto:info@mysite.com">info@mysite.com</a><br />
+            <a href="tel:1234567890">123-456-7890</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="tm-footer">
+    <p>&copy; 2026 Trio Production House — <a href="Trio.0.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    // Detect touch/coarse-pointer devices so we can show the tap hint
+    // and rely on tap (not hover) to reveal card details.
+    const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches
+      || 'ontouchstart' in window;
+    if (isTouchDevice) {
+      document.body.classList.add('tm-touch');
+    }
+
+    // Navbar shrink
+    const tmNav = document.getElementById('tmNav');
+    window.addEventListener('scroll', () => {
+      tmNav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Scroll reveal
+    const tmObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('tm-visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.tm-reveal').forEach(el => tmObserver.observe(el));
+
+    // Tap-to-reveal for touch devices: first tap opens a card's info,
+    // a second tap on the same card (or a tap elsewhere) closes it.
+    // Tapping the email/phone links still follows them as usual.
+    const tmCards = document.querySelectorAll('.tm-card');
+    tmCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (!document.body.classList.contains('tm-touch')) return;
+        if (e.target.closest('a')) return; // let mailto/tel links work normally
+
+        const alreadyOpen = card.classList.contains('tm-card--open');
+        tmCards.forEach(c => c.classList.remove('tm-card--open'));
+        if (!alreadyOpen) {
+          card.classList.add('tm-card--open');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('tm-touch')) return;
+      if (!e.target.closest('.tm-card')) {
+        tmCards.forEach(c => c.classList.remove('tm-card--open'));
+      }
+    });
+  </script>
+
+</body>
+</html>
