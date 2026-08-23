@@ -388,9 +388,10 @@
     #services .more-sector { margin-top: auto; padding: 16px 0 0; }
 
     /* === TEAM nth-child (scoped to #team only) === */
-    #team .team-card:nth-child(1) { margin-top: 0;   grid-column: span 2; }
-    #team .team-card:nth-child(2) { margin-top: 60px; grid-column: span 2; }
-    #team .team-card:nth-child(3) { margin-top: 0;   grid-column: span 2; }
+    #team .team-card:nth-child(1) { margin-top: 0; grid-column: unset; }
+    #team .team-card:nth-child(2) { margin-top: 0; grid-column: unset; }
+    #team .team-card:nth-child(3) { margin-top: 0; grid-column: unset; }
+    #team .team-grid { grid-template-columns: repeat(3, 1fr); }
 
     .team-info {
       background: var(--cream); color: var(--ink);
@@ -657,8 +658,8 @@
 
     /* === RESPONSIVE === */
     @media (max-width: 900px) {
-      .team-grid { grid-template-columns: 1fr; gap: 32px; max-width: 480px; }
-      #services .team-grid { grid-template-columns: 1fr; max-width: 480px; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 100%; }
+      #services .team-grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
       #services .team-card:nth-child(1),
       #services .team-card:nth-child(2),
       #services .team-card:nth-child(3),
@@ -666,7 +667,9 @@
       #team .team-card:nth-child(1),
       #team .team-card:nth-child(2),
       #team .team-card:nth-child(3) { margin-top: 0; grid-column: unset; }
-      .team-section { padding: 64px 20px; }
+      .team-card .photo-wrap { height: 180px; }
+      .team-card .photo { height: 180px; }
+      .team-section { padding: 64px 16px; }
       .nav-links { display: none; }
       .nav-social { gap: 12px; }
       .vm-row { grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px; }
@@ -785,156 +788,72 @@
     .mc-card { height: 240px; }
   }
 
-  /* ===== OUR FOUNDERS testimonials (compact, centered, polished) ===== */
-  .testimonial-1,
-  .testimonial-2,
-  .testimonial-3 {
-    max-width: 1000px;
-    margin: 0 auto 18px;
-    border-radius: 16px;
+  /* ===== OUR FOUNDERS — 3 cards side by side ===== */
+  .founders-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .founder-card {
+    border-radius: 20px;
     overflow: hidden;
-  }
-  .testimonial-3 { margin-bottom: 0; }
-
-  .testimonial-1 {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    min-height: 260px;
-    background: #D8D0BD;
-  }
-  .text-panel-1 {
+    background: #f4f1e8;
     display: flex;
-    align-items: center;
-    padding: 32px 44px;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s;
   }
-  .text-inner-1 {
-    position: relative;
-    padding-left: 24px;
-    border-left: 1px solid #B9AF98;
-    max-width: 420px;
+  .founder-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(48,48,48,0.14);
   }
-  .quote-mark-1 {
+  .founder-card__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .founder-card:hover .founder-card__photo { transform: scale(1.04); }
+  .founder-card__photo-wrap { overflow: hidden; }
+  .founder-card__body {
+    padding: 28px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-top: 3px solid #C5630A;
+  }
+  .founder-card__quote-mark {
     font-family: Georgia, serif;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     color: #C5630A;
     line-height: 1;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .quote-text-1 {
-    font-size: 14.5px;
-    line-height: 1.65;
+  .founder-card__text {
+    font-size: 13.5px;
+    line-height: 1.7;
     color: #303030;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
+    flex: 1;
   }
-  .quote-author-1 {
-    font-family: Arial, sans-serif;
+  .founder-card__author {
     font-size: 13px;
     font-weight: 700;
     color: #303030;
-    letter-spacing: 0.3px;
-  }
-  .photo-panel-1 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    letter-spacing: 0.04em;
+    border-top: 1px solid rgba(48,48,48,0.12);
+    padding-top: 14px;
   }
 
-  .testimonial-2 {
-    display: grid;
-    grid-template-columns: 45% 55%;
-    min-height: 260px;
-    background: #D8D0BD;
+  @media (max-width: 900px) {
+    .founders-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 0 20px; }
   }
-  .text-panel-2 {
-    display: flex;
-    align-items: center;
-    padding: 32px 44px;
-  }
-  .text-inner-2 {
-    position: relative;
-    padding-left: 24px;
-    border-left: 1px solid #B9AF98;
-    max-width: 420px;
-  }
-  .quote-mark-2 {
-    font-family: Georgia, serif;
-    font-size: 32px;
-    font-weight: bold;
-    color: #C5630A;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  .quote-text-2 {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: #303030;
-    margin-bottom: 14px;
-  }
-  .quote-author-2 {
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: #303030;
-    letter-spacing: 0.3px;
-  }
-  .photo-panel-2 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .testimonial-3 {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    min-height: 260px;
-    background: #D8D0BD;
-  }
-  .text-panel-3 {
-    display: flex;
-    align-items: center;
-    padding: 32px 44px;
-  }
-  .text-inner-3 {
-    position: relative;
-    padding-left: 24px;
-    border-left: 1px solid #B9AF98;
-    max-width: 420px;
-  }
-  .quote-mark-3 {
-    font-family: Georgia, serif;
-    font-size: 32px;
-    font-weight: bold;
-    color: #C5630A;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  .quote-text-3 {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: #303030;
-    margin-bottom: 14px;
-  }
-  .quote-author-3 {
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: #303030;
-    letter-spacing: 0.3px;
-  }
-  .photo-panel-3 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  @media (max-width: 700px) {
-    .testimonial-1, .testimonial-2, .testimonial-3 { grid-template-columns: 1fr; }
-    .photo-panel-1, .photo-panel-2, .photo-panel-3 { min-height: 180px; }
-    .text-panel-1, .text-panel-2, .text-panel-3 { padding: 22px 26px; }
+  @media (max-width: 520px) {
+    .founders-grid { grid-template-columns: 1fr; }
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -1264,47 +1183,48 @@
 
       <div class="mc-wrap">
       <div class="mc-heading">
-        <h1>OUR FOUNDRES</h1>
+        <h1>OUR FOUNDERS</h1>
       </div>
       <div class="mc-divider"></div>
-  
-  <!-- Testimonial 1: photo RIGHT -->
 
-  <div class="testimonial-1">
-    <div class="text-panel-1">
-      <div class="text-inner-1">
-        <div class="quote-mark-1">&rdquo;</div>
-        <p class="quote-text-1">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
-        <div class="quote-author-1">Sahar &amp; </div>
+  <div class="founders-grid">
+
+    <!-- Founder 1 -->
+    <div class="founder-card">
+      <div class="founder-card__photo-wrap">
+        <img class="founder-card__photo" src="../T.jpg" alt="Founder photo" data-drive-key="testimonial1" data-drive-link="">
+      </div>
+      <div class="founder-card__body">
+        <div class="founder-card__quote-mark">&rdquo;</div>
+        <p class="founder-card__text">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
+        <div class="founder-card__author">Sahar &amp;</div>
       </div>
     </div>
-    <img class="photo-panel-1" src="../T.jpg" alt="Testimonial photo" data-drive-key="testimonial1" data-drive-link="">
-  </div>
 
-  <!-- Testimonial 2: photo LEFT (opposite of 1 and 3) -->
-
-  <div class="testimonial-2">
-    <img class="photo-panel-2" src="../T.jpg" alt="Testimonial photo" data-drive-key="testimonial2" data-drive-link="">
-    <div class="text-panel-2">
-      <div class="text-inner-2">
-        <div class="quote-mark-2">&rdquo;</div>
-        <p class="quote-text-2">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
-        <div class="quote-author-2">Sahar &amp; </div>
+    <!-- Founder 2 -->
+    <div class="founder-card">
+      <div class="founder-card__photo-wrap">
+        <img class="founder-card__photo" src="../T.jpg" alt="Founder photo" data-drive-key="testimonial2" data-drive-link="">
+      </div>
+      <div class="founder-card__body">
+        <div class="founder-card__quote-mark">&rdquo;</div>
+        <p class="founder-card__text">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
+        <div class="founder-card__author">Sahar &amp;</div>
       </div>
     </div>
-  </div>
 
-  <!-- Testimonial 3: photo RIGHT -->
-
-  <div class="testimonial-3">
-    <div class="text-panel-3">
-      <div class="text-inner-3">
-        <div class="quote-mark-3">&rdquo;</div>
-        <p class="quote-text-3">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
-        <div class="quote-author-3">Sahar &amp; </div>
+    <!-- Founder 3 -->
+    <div class="founder-card">
+      <div class="founder-card__photo-wrap">
+        <img class="founder-card__photo" src="../T.jpg" alt="Founder photo" data-drive-key="testimonial3" data-drive-link="">
+      </div>
+      <div class="founder-card__body">
+        <div class="founder-card__quote-mark">&rdquo;</div>
+        <p class="founder-card__text">Rewatching our Family Podcast&trade; made me tear up all over again. What a gift! Thanks again to the entire Poddster family for this amazing experience.</p>
+        <div class="founder-card__author">Sahar &amp;</div>
       </div>
     </div>
-    <img class="photo-panel-3" src="../T.jpg" alt="Testimonial photo" data-drive-key="testimonial3" data-drive-link="">
+
   </div>
 
 
