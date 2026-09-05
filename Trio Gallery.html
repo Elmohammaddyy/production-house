@@ -1,0 +1,787 @@
+<!-- Gallery -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Trio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* Roc Grotesk is a licensed font — host the actual files (woff2/woff) somewhere
+       on your server or CDN and point the src below at them. Until then, the
+       fallbacks (system sans-serif) will be used automatically. */
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Regular.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Medium.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Bold.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* =====================
+       PAGE-LEVEL TOKENS
+       Prefixed with .gy- so nothing leaks to/from other pages
+       Matched to the Production House palette
+    ===================== */
+    :root {
+      --gy-bg:     #d8d0bd;
+      --gy-ink:    #303030;
+      --gy-cream:  #f4f1e8;
+      --gy-orange: #c5630a;
+      --gy-muted:  rgba(48,48,48,0.55);
+      --gy-line:   rgba(48,48,48,0.12);
+      --gy-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    html, body {
+      background: var(--gy-bg);
+      color: var(--gy-ink);
+      font-family: 'Roc Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; }
+
+    a { color: inherit; }
+
+    /* =====================
+       NAVBAR
+    ===================== */
+    .gy-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(216, 208, 189, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(48,48,48,0.08);
+      transition: background 0.3s, padding 0.3s;
+    }
+    .gy-nav.scrolled {
+      background: rgba(216, 208, 189, 0.97);
+      padding: 14px 40px;
+    }
+    .gy-nav__brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--gy-ink);
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      touch-action: manipulation;
+    }
+    .gy-nav__logo {
+      width: 26px; height: 26px;
+      background: var(--gy-orange);
+      color: var(--gy-cream);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .gy-nav__back {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gy-ink);
+      text-decoration: none; opacity: 0.7;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, gap 0.2s;
+      padding: 10px 4px;
+      touch-action: manipulation;
+      white-space: nowrap;
+    }
+
+    /* =====================
+       HERO BANNER
+    ===================== */
+    .gy-hero {
+      position: relative;
+      height: 60vh; min-height: 320px;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .gy-hero__bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.72) contrast(1.08) saturate(1.05);
+      transition: transform 8s ease-out, filter 0.6s ease;
+    }
+    .gy-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(20,17,13,0.55) 0%,
+        rgba(20,17,13,0.32) 28%,
+        rgba(20,17,13,0.4) 55%,
+        rgba(20,17,13,0.68) 82%,
+        var(--gy-bg) 100%
+      );
+    }
+    .gy-hero__content {
+      position: relative; z-index: 2;
+      padding: 0 48px 56px;
+      max-width: 100%;
+    }
+    .gy-hero__eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gy-orange); margin-bottom: 12px;
+    }
+    .gy-hero__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 12vw, 120px);
+      line-height: 0.95; letter-spacing: 0.01em;
+      color: var(--gy-cream);
+    }
+    .gy-hero__sub {
+      margin-top: 16px;
+      font-size: 14px; line-height: 1.6;
+      color: var(--gy-cream); opacity: 0.85;
+      max-width: 480px;
+    }
+
+    .gy-divider {
+      width: 48px; height: 1px;
+      background: var(--gy-orange);
+      margin: 56px auto;
+      opacity: 0.8;
+    }
+
+    /* =====================
+       MOSAIC GRID
+    ===================== */
+    .gallery-section {
+      padding: 0 24px 96px;
+    }
+    .gallery-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: 110px;
+      gap: 10px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: #3a3a3a;
+      border-radius: 14px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.92);
+      transition: transform 0.7s var(--gy-ease), filter 0.5s;
+    }
+
+    /* dark gradient overlay, same as the Production House cards */
+    .gallery-item__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,
+        rgba(48,48,48,0.92) 0%,
+        rgba(48,48,48,0.25) 50%,
+        transparent 100%);
+      transition: opacity 0.4s;
+    }
+
+    /* orange accent line — slides up on hover/tap */
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gy-orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--gy-ease);
+      z-index: 3;
+    }
+
+    .gallery-item__num {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 12px; letter-spacing: 0.2em;
+      color: var(--gy-cream); opacity: 0.55;
+      z-index: 2;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-item__body {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 18px 18px 20px;
+      z-index: 2;
+      transform: translateY(8px);
+      transition: transform 0.4s var(--gy-ease);
+    }
+
+    .gallery-item__tag {
+      display: inline-block;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gy-orange);
+      margin-bottom: 6px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s 0.05s, transform 0.3s 0.05s;
+    }
+
+    .gallery-item__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; letter-spacing: 0.02em;
+      color: var(--gy-cream); line-height: 1.05;
+    }
+
+    /* Play badge shown on video tiles, centered over the thumbnail */
+    .gallery-item__play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(20,18,14,0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1.5px solid rgba(244,241,232,0.4);
+      color: var(--gy-cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      z-index: 2;
+      transition: background 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+    .gallery-item__play i { margin-left: 3px; } /* optical centering for the play glyph */
+    .gallery-item.gallery-item--active .gallery-item__play,
+    .gallery-item:hover .gallery-item__play { background: var(--gy-orange); transform: translate(-50%, -50%) scale(1.08); }
+
+    /* -----------------------------------------------------------
+       Shared "active" state — real :hover on mouse-capable devices
+       (media-guarded below) plus a matching .gallery-item--active
+       class, toggled by JS on tap, for touch devices. This keeps
+       touchscreens from getting stuck mid-animation after a tap. */
+    .gallery-item.gallery-item--active img { transform: scale(1.07); filter: brightness(1); }
+    .gallery-item.gallery-item--active::before { transform: scaleX(1); }
+    .gallery-item.gallery-item--active .gallery-item__num { opacity: 0.95; }
+    .gallery-item.gallery-item--active .gallery-item__body { transform: translateY(0); }
+    .gallery-item.gallery-item--active .gallery-item__tag { opacity: 1; transform: translateY(0); }
+    .caption-tile.gallery-item--active { background: var(--gy-orange); color: var(--gy-cream); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .gy-hero:hover .gy-hero__bg { transform: scale(1.04); }
+      .gallery-item:hover img { transform: scale(1.07); filter: brightness(1); }
+      .gallery-item:hover::before { transform: scaleX(1); }
+      .gallery-item:hover .gallery-item__num { opacity: 0.95; }
+      .gallery-item:hover .gallery-item__body { transform: translateY(0); }
+      .gallery-item:hover .gallery-item__tag { opacity: 1; transform: translateY(0); }
+      .caption-tile:hover { background: var(--gy-orange); color: var(--gy-cream); }
+      .gy-nav__back:hover { opacity: 1; gap: 12px; color: var(--gy-orange); }
+      .gy-footer a:hover { color: var(--gy-orange); }
+    }
+
+    /* Brief tap feedback on touch devices (a quick, self-resetting press state) */
+    @media (hover: none), (pointer: coarse) {
+      .gallery-item:active img { transform: scale(1.03); filter: brightness(1); }
+      .gallery-item:active::before { transform: scaleX(1); }
+      .caption-tile:active { background: var(--gy-orange); color: var(--gy-cream); }
+    }
+
+    .item-1 { grid-column: span 2; grid-row: span 2; }
+    .item-2 { grid-column: span 2; grid-row: span 2; }
+    .item-3 { grid-column: span 2; grid-row: span 2; }
+    .item-4 { grid-column: span 2; grid-row: span 3; }
+    .item-5 { grid-column: span 4; grid-row: span 3; }
+    .item-6 { grid-column: span 4; grid-row: span 3; }
+    .item-7 { grid-column: span 2; grid-row: span 3; }
+    .item-8 { grid-column: span 2; grid-row: span 2; }
+    .item-9 { grid-column: span 2; grid-row: span 2; }
+    .item-10 { grid-column: span 2; grid-row: span 2; }
+
+    /* Caption tile (cream) */
+    .caption-tile {
+      background: var(--gy-cream);
+      color: var(--gy-ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .caption-tile .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .caption-tile .label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+    }
+    .caption-tile .divider {
+      width: 24px;
+      height: 1px;
+      background: currentColor;
+      margin: 0 0 12px;
+    }
+
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
+    .gy-reveal {
+      opacity: 0; transform: translateY(24px) scale(0.97);
+      transition: opacity 0.6s ease, transform 0.6s var(--gy-ease);
+    }
+    .gy-reveal.gy-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* =====================
+       LIGHTBOX
+    ===================== */
+    .gy-lightbox {
+      position: fixed; inset: 0;
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(20,17,13,0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 40px;
+    }
+    .gy-lightbox.gy-lightbox--open { opacity: 1; pointer-events: auto; }
+    .gy-lightbox__inner {
+      position: relative;
+      max-width: min(1400px, 92vw);
+      max-height: 88vh;
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gy-lightbox__inner img {
+      max-width: 100%; max-height: 88vh;
+      width: auto; height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: scale(0.94);
+      transition: transform 0.3s ease;
+      object-fit: contain;
+    }
+    .gy-lightbox--open .gy-lightbox__inner img { transform: scale(1); }
+    .gy-lightbox__inner iframe {
+      width: min(1200px, 92vw);
+      aspect-ratio: 16 / 9;
+      max-height: 88vh;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      background: #000;
+      transform: scale(0.94);
+      transition: transform 0.3s ease;
+    }
+    .gy-lightbox--open .gy-lightbox__inner iframe { transform: scale(1); }
+    .gy-lightbox__close {
+      position: absolute; top: 24px; right: 28px;
+      width: 44px; height: 44px;
+      border-radius: 50%; border: none;
+      background: rgba(244,241,232,0.12);
+      color: var(--gy-cream);
+      font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 2;
+      touch-action: manipulation;
+    }
+    .gy-lightbox__close:hover { background: var(--gy-orange); transform: rotate(90deg); }
+    .gy-lightbox__label {
+      position: absolute; bottom: -36px; left: 0; right: 0;
+      text-align: center;
+      font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gy-cream); opacity: 0.75;
+    }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    .gy-footer {
+      border-top: 1px solid var(--gy-line);
+      padding: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gy-muted);
+    }
+    .gy-footer a {
+      color: var(--gy-ink); text-decoration: none;
+      font-weight: 600; letter-spacing: 0.08em;
+      transition: color 0.2s;
+      padding: 6px 2px;
+      display: inline-block;
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 768px) {
+      .gy-hero__content { padding: 0 24px 40px; }
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 140px;
+        gap: 8px;
+      }
+      .item-1, .item-2, .item-3,
+      .item-4, .item-5, .item-6,
+      .item-7, .item-8, .item-9, .item-10 {
+        grid-column: span 1;
+        grid-row: span 2;
+      }
+      .item-5, .item-6 { grid-column: span 2; }
+    }
+
+    @media (max-width: 640px) {
+      .gy-nav { padding: 16px 20px; }
+      .gy-nav.scrolled { padding: 12px 20px; }
+      .gy-nav__back-text { display: none; }
+      .gy-nav__back { gap: 0; font-size: 16px; padding: 8px; opacity: 0.85; }
+      .gy-hero { min-height: 260px; }
+      .gy-hero__sub { max-width: 100%; }
+      .gy-divider { margin: 40px auto; }
+      .gallery-section { padding: 0 14px 64px; }
+      .gallery-grid { grid-auto-rows: 128px; gap: 8px; }
+      .gallery-item__title { font-size: 17px; }
+      .gy-footer { padding: 24px 16px; }
+      .gy-lightbox { padding: 20px; }
+      .gy-lightbox__close { top: 12px; right: 12px; }
+    }
+
+    @media (max-width: 380px) {
+      .gy-hero__title { font-size: clamp(38px, 13vw, 60px); }
+      .gallery-grid { grid-auto-rows: 112px; }
+    }
+
+    /* Respect users who've asked for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .gy-reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="gy-nav" id="gyNav">
+    <a href="index.html" class="gy-nav__brand">
+      <span class="gy-nav__logo">t</span>
+      Trio
+    </a>
+    <a href="Trio.0.html" class="gy-nav__back" aria-label="Back to Services">
+      <i class="fa-solid fa-arrow-left"></i> <span class="gy-nav__back-text">Back to Services</span>
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="gy-hero">
+    <img src="gallery-hero.jpg" alt="Trio production gallery" class="gy-hero__bg" data-drive-key="hero" data-drive-link="" />
+    <div class="gy-hero__overlay"></div>
+    <div class="gy-hero__content">
+      <p class="gy-hero__eyebrow">Our Work</p>
+      <h1 class="gy-hero__title">Gallery</h1>
+      <p class="gy-hero__sub">Stills from the sets, shoots, and productions we've brought to life — a look behind the scenes and in front of the lens.</p>
+    </div>
+  </header>
+  <div class="gy-divider"></div>
+
+  <!-- Mosaic Grid -->
+  <section class="gallery-section">
+    <div class="gallery-grid">
+      <div class="gallery-item item-1 gy-reveal"><img loading="lazy" src="g1.jpg" alt="Film crew with crane" data-drive-key="g1" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">01</span><div class="gallery-item__body"><h3 class="gallery-item__title">Film crew with crane</h3></div></div>
+      <div class="gallery-item item-2 gy-reveal" style="transition-delay:0.05s"><img loading="lazy" src="g2.jpg" alt="Action camera" data-drive-key="g2" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">02</span><div class="gallery-item__body"><h3 class="gallery-item__title">Action camera</h3></div></div>
+      <div class="gallery-item item-3 gy-reveal" style="transition-delay:0.1s"><img loading="lazy" src="g3.jpg" alt="Clapperboard" data-drive-key="g3" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">03</span><div class="gallery-item__body"><h3 class="gallery-item__title">Clapperboard</h3></div></div>
+      <div class="gallery-item item-4 gy-reveal" style="transition-delay:0.15s"><img loading="lazy" src="g4.jpg" alt="Yellow studio backdrop" data-drive-key="g4" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">04</span><div class="gallery-item__body"><h3 class="gallery-item__title">Yellow studio backdrop</h3></div></div>
+      <!-- VIDEO TILE EXAMPLE — add a Google Drive video link the same way as a photo:
+           paste it into data-drive-link below. The thumbnail and the playable
+           video are both generated automatically from that one link. -->
+      <div class="gallery-item item-5 gy-reveal" style="transition-delay:0.2s" data-media-type="video" data-drive-key="v1" data-drive-link="">
+        <img loading="lazy" src="g5.jpg" alt="Cinema camera on gimbal" />
+        <div class="gallery-item__overlay"></div>
+        <div class="gallery-item__play"><i class="fa-solid fa-play"></i></div>
+        <span class="gallery-item__num">05</span>
+        <div class="gallery-item__body"><h3 class="gallery-item__title">Cinema camera on gimbal</h3></div>
+      </div>
+      <div class="gallery-item item-6 gy-reveal" style="transition-delay:0.25s"><img loading="lazy" src="g6.jpg" alt="Snowy film shoot" data-drive-key="g6" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">06</span><div class="gallery-item__body"><h3 class="gallery-item__title">Snowy film shoot</h3></div></div>
+      <div class="gallery-item item-7 caption-tile gy-reveal" style="transition-delay:0.3s">
+        <div class="num">01</div>
+        <div class="divider"></div>
+        <div class="label">Film Set Setup</div>
+      </div>
+      <div class="gallery-item item-8 gy-reveal" style="transition-delay:0.05s"><img loading="lazy" src="g7.jpg" alt="Western film set" data-drive-key="g7" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">07</span><div class="gallery-item__body"><h3 class="gallery-item__title">Western film set</h3></div></div>
+      <div class="gallery-item item-9 gy-reveal" style="transition-delay:0.1s"><img loading="lazy" src="g8.jpg" alt="Sunset rooftop shoot" data-drive-key="g8" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">08</span><div class="gallery-item__body"><h3 class="gallery-item__title">Sunset rooftop shoot</h3></div></div>
+      <div class="gallery-item item-10 gy-reveal" style="transition-delay:0.15s"><img loading="lazy" src="g9.jpg" alt="Camera operator" data-drive-key="g9" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">09</span><div class="gallery-item__body"><h3 class="gallery-item__title">Camera operator</h3></div></div>
+
+      <div class="gallery-item item-1 gy-reveal"><img loading="lazy" src="g10.jpg" alt="Behind the scenes lighting rig" data-drive-key="g10" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">10</span><div class="gallery-item__body"><h3 class="gallery-item__title">Behind the scenes lighting rig</h3></div></div>
+      <div class="gallery-item item-2 gy-reveal" style="transition-delay:0.05s"><img loading="lazy" src="g11.jpg" alt="Director reviewing monitor" data-drive-key="g11" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">11</span><div class="gallery-item__body"><h3 class="gallery-item__title">Director reviewing monitor</h3></div></div>
+      <div class="gallery-item item-3 gy-reveal" style="transition-delay:0.1s"><img loading="lazy" src="g12.jpg" alt="Boom mic operator" data-drive-key="g12" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">12</span><div class="gallery-item__body"><h3 class="gallery-item__title">Boom mic operator</h3></div></div>
+      <div class="gallery-item item-4 gy-reveal" style="transition-delay:0.15s"><img loading="lazy" src="g13.jpg" alt="Studio product shoot" data-drive-key="g13" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">13</span><div class="gallery-item__body"><h3 class="gallery-item__title">Studio product shoot</h3></div></div>
+      <!-- Second video tile example -->
+      <div class="gallery-item item-5 gy-reveal" style="transition-delay:0.2s" data-media-type="video" data-drive-key="v2" data-drive-link="">
+        <img loading="lazy" src="g14.jpg" alt="Wide shot of full crew" />
+        <div class="gallery-item__overlay"></div>
+        <div class="gallery-item__play"><i class="fa-solid fa-play"></i></div>
+        <span class="gallery-item__num">14</span>
+        <div class="gallery-item__body"><h3 class="gallery-item__title">Wide shot of full crew</h3></div>
+      </div>
+      <div class="gallery-item item-6 gy-reveal" style="transition-delay:0.25s"><img loading="lazy" src="g15.jpg" alt="Night exterior shoot" data-drive-key="g15" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">15</span><div class="gallery-item__body"><h3 class="gallery-item__title">Night exterior shoot</h3></div></div>
+      <div class="gallery-item item-7 caption-tile gy-reveal" style="transition-delay:0.3s">
+        <div class="num">02</div>
+        <div class="divider"></div>
+        <div class="label">On Location</div>
+      </div>
+      <div class="gallery-item item-8 gy-reveal" style="transition-delay:0.05s"><img loading="lazy" src="g16.jpg" alt="Color grading suite" data-drive-key="g16" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">16</span><div class="gallery-item__body"><h3 class="gallery-item__title">Color grading suite</h3></div></div>
+      <div class="gallery-item item-9 gy-reveal" style="transition-delay:0.1s"><img loading="lazy" src="g17.jpg" alt="Podcast recording setup" data-drive-key="g17" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">17</span><div class="gallery-item__body"><h3 class="gallery-item__title">Podcast recording setup</h3></div></div>
+      <div class="gallery-item item-10 gy-reveal" style="transition-delay:0.15s"><img loading="lazy" src="g18.jpg" alt="Wardrobe and styling" data-drive-key="g18" data-drive-link="" /><div class="gallery-item__overlay"></div><span class="gallery-item__num">18</span><div class="gallery-item__body"><h3 class="gallery-item__title">Wardrobe and styling</h3></div></div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="gy-lightbox" id="gyLightbox">
+    <div class="gy-lightbox__inner" id="gyLightboxInner">
+      <button class="gy-lightbox__close" id="gyLightboxClose" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="gy-footer">
+    <p>&copy; 2026 Trio Production House — <a href="Trio.0.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    // ============================================================
+    // GOOGLE DRIVE LINK HELPER — photos & videos
+    // ============================================================
+    // HOW TO ADD YOUR OWN PHOTOS — everything happens up in the HTML
+    // above, nothing to edit down here:
+    //
+    // 1. In Google Drive, right-click the photo → Share → set to
+    //    "Anyone with the link" → Viewer → click "Copy link".
+    // 2. In the HTML above, find the <img> for that tile. Every one has
+    //    a data-drive-key="..." label to help you find it (search your
+    //    editor for its name, e.g. "g1", "g2", "hero") and a
+    //    data-drive-link="" right next to it.
+    // 3. Paste your copied link between the quotes of data-drive-link,
+    //    e.g.: data-drive-link="https://drive.google.com/file/d/xxxxx/view"
+    // 4. Save the file and reopen it in a browser.
+    //
+    // HOW TO ADD A VIDEO:
+    // Same steps, but paste the link on the .gallery-item wrapper itself
+    // instead of an <img> — look for data-media-type="video" tiles (there
+    // are two examples already set up, tagged v1 and v2). One link is all
+    // a video tile needs: it's used to build both the grid thumbnail and
+    // the playable video shown when the tile is clicked.
+    //
+    // To turn any existing PHOTO tile into a VIDEO tile: add
+    // data-media-type="video" and move its data-drive-link from the
+    // <img> up onto the surrounding .gallery-item div (and add a
+    // <div class="gallery-item__play"><i class="fa-solid fa-play"></i></div>
+    // so it gets the play icon).
+    //
+    // Any of these link formats work:
+    //   https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+    //   https://drive.google.com/file/d/FILE_ID/preview
+    //   https://drive.google.com/open?id=FILE_ID
+    //   https://drive.google.com/uc?id=FILE_ID&export=view
+    // A bare file ID with no link also still works.
+    //
+    // NOTE: this uses an unofficial Drive hotlink trick for image
+    // thumbnails that can occasionally break without warning on
+    // high-traffic sites. Video playback uses Google's own official
+    // embeddable preview player, so that part is stable.
+    // ============================================================
+    function extractDriveId(value) {
+      if (!value) return '';
+      const trimmed = value.trim();
+      if (trimmed === '') return '';
+      if (/\/folders\//.test(trimmed)) {
+        console.warn('[Drive] This is a folder link, not a file link — open the file inside the folder and copy its own link instead:', trimmed);
+        return '';
+      }
+      if (!/[\/:]/.test(trimmed)) return trimmed;
+      const patterns = [
+        /\/d\/([a-zA-Z0-9_-]{10,})/,
+        /[?&]id=([a-zA-Z0-9_-]{10,})/
+      ];
+      for (const p of patterns) {
+        const m = trimmed.match(p);
+        if (m) return m[1];
+      }
+      console.warn('[Drive] Could not find a file ID in this link — double-check it was copied from an individual file (Share → Copy link):', trimmed);
+      return '';
+    }
+
+    (function applyDriveLinks() {
+      // Plain photo tiles: the link lives on the <img> itself.
+      document.querySelectorAll('img[data-drive-link]').forEach(img => {
+        const link = img.getAttribute('data-drive-link');
+        if (!link || link.trim() === '') return;
+        const id = extractDriveId(link);
+        if (!id) return;
+        img.src = `https://lh3.googleusercontent.com/d/${id}=w1600`;
+      });
+
+      // Video tiles: the link lives on the .gallery-item wrapper. Derive a
+      // thumbnail (Drive auto-generates one for video files too) and stash
+      // the ID for the lightbox to build a playable embed from later.
+      document.querySelectorAll('.gallery-item[data-media-type="video"][data-drive-link]').forEach(item => {
+        const link = item.getAttribute('data-drive-link');
+        if (!link || link.trim() === '') return;
+        const id = extractDriveId(link);
+        if (!id) return;
+        item.dataset.driveVideoId = id;
+        const thumb = item.querySelector('img');
+        if (thumb) thumb.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+      });
+    })();
+
+    const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches
+      || 'ontouchstart' in window;
+    if (isTouchDevice) {
+      document.body.classList.add('gy-touch');
+    }
+
+    // Navbar shrink
+    const gyNav = document.getElementById('gyNav');
+    window.addEventListener('scroll', () => {
+      gyNav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Scroll reveal
+    const gyObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('gy-visible');
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.gy-reveal').forEach(el => gyObserver.observe(el));
+
+    // Tap-to-highlight for touch devices: a tap "activates" a tile (accent
+    // line, zoom, caption fade-in), a second tap or a tap elsewhere clears it.
+    const gyItems = document.querySelectorAll('.gallery-item');
+    gyItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (!document.body.classList.contains('gy-touch')) return;
+        const alreadyActive = item.classList.contains('gallery-item--active');
+        gyItems.forEach(i => i.classList.remove('gallery-item--active'));
+        if (!alreadyActive) item.classList.add('gallery-item--active');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('gy-touch')) return;
+      if (!e.target.closest('.gallery-item')) {
+        gyItems.forEach(i => i.classList.remove('gallery-item--active'));
+      }
+    });
+
+    // ============================================================
+    // LIGHTBOX — click any photo to view it full size
+    // ============================================================
+    (function setupLightbox() {
+      const lightbox = document.getElementById('gyLightbox');
+      const inner = document.getElementById('gyLightboxInner');
+      const closeBtn = document.getElementById('gyLightboxClose');
+
+      function openLightbox(item) {
+        inner.querySelectorAll('img, iframe, .gy-lightbox__label').forEach(n => n.remove());
+
+        const videoId = item.dataset.driveVideoId;
+        if (videoId) {
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://drive.google.com/file/d/${videoId}/preview`;
+          iframe.allow = 'autoplay; fullscreen';
+          iframe.allowFullscreen = true;
+          inner.appendChild(iframe);
+        } else {
+          const imgEl = item.querySelector('img');
+          if (!imgEl) return; // caption tiles have no media to show
+          const clone = document.createElement('img');
+          clone.src = imgEl.currentSrc || imgEl.src;
+          clone.alt = imgEl.alt || '';
+          inner.appendChild(clone);
+        }
+
+        const title = item.querySelector('.gallery-item__title');
+        if (title && title.textContent.trim()) {
+          const cap = document.createElement('div');
+          cap.className = 'gy-lightbox__label';
+          cap.textContent = title.textContent.trim();
+          inner.appendChild(cap);
+        }
+
+        lightbox.classList.add('gy-lightbox--open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('gy-lightbox--open');
+        document.body.style.overflow = '';
+        // Removing the iframe/video stops any playback when closed
+        inner.querySelectorAll('img, iframe, .gy-lightbox__label').forEach(n => n.remove());
+      }
+
+      document.addEventListener('click', (e) => {
+        // The overlay/body/num/play elements sit visually on top of the
+        // thumbnail, so a click's actual target is usually one of those —
+        // find the containing tile first rather than requiring a direct hit.
+        const item = e.target.closest('.gallery-item');
+        if (!item || item.classList.contains('caption-tile')) return;
+        openLightbox(item);
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('gy-lightbox--open')) closeLightbox();
+      });
+    })();
+  </script>
+
+</body>
+</html>

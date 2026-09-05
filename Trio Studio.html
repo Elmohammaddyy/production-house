@@ -1,0 +1,738 @@
+<!-- Editing -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio — Trio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    @font-face { font-family:'Roc Grotesk'; src:url('../fonts/RocGrotesk-Regular.woff2') format('woff2'),url('../fonts/RocGrotesk-Regular.woff') format('woff'); font-weight:400; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Roc Grotesk'; src:url('../fonts/RocGrotesk-Medium.woff2') format('woff2'),url('../fonts/RocGrotesk-Medium.woff') format('woff'); font-weight:500; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Roc Grotesk'; src:url('../fonts/RocGrotesk-Bold.woff2') format('woff2'),url('../fonts/RocGrotesk-Bold.woff') format('woff'); font-weight:700; font-style:normal; font-display:swap; }
+    :root { --ed-bg:#d8d0bd; --ed-ink:#303030; --ed-cream:#f4f1e8; --ed-orange:#c5630a; --ed-muted:rgba(48,48,48,0.55); --ed-card:#f4f1e8; --ed-line:rgba(48,48,48,0.12); --ed-ease:cubic-bezier(0.4,0,0.2,1); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:90px; }
+    html,body { background:var(--ed-bg); color:var(--ed-ink); font-family:'Roc Grotesk','Helvetica Neue',Arial,sans-serif; min-height:100vh; overflow-x:hidden; }
+    a { color:inherit; }
+
+    /* NAV */
+    .ed-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:20px 40px; background:rgba(216,208,189,0.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid rgba(48,48,48,0.08); transition:background 0.3s,padding 0.3s; }
+    .ed-nav.scrolled { background:rgba(216,208,189,0.97); padding:14px 40px; }
+    .ed-nav__brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ed-ink); font-size:14px; font-weight:500; letter-spacing:0.05em; }
+    .ed-nav__logo { width:26px; height:26px; background:var(--ed-orange); color:var(--ed-cream); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:16px; }
+    .ed-nav__back { font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--ed-ink); text-decoration:none; opacity:0.7; display:flex; align-items:center; gap:8px; transition:opacity 0.2s,gap 0.2s; }
+    .ed-nav__back:hover { opacity:1; gap:12px; color:var(--ed-orange); }
+
+    /* HERO */
+    .ed-hero { position:relative; height:60vh; min-height:360px; overflow:hidden; display:flex; align-items:flex-end; }
+    .ed-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(0.72) contrast(1.08) saturate(1.05); transition:transform 8s ease-out,filter 0.6s ease; }
+    .ed-hero:hover .ed-hero__bg { transform:scale(1.04); }
+    .ed-hero__overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(20,17,13,0.55) 0%,rgba(20,17,13,0.32) 28%,rgba(20,17,13,0.4) 55%,rgba(20,17,13,0.68) 82%,var(--ed-bg) 100%); }
+    .ed-hero__content { position:relative; z-index:2; padding:0 48px 56px; }
+    .ed-hero__eyebrow { font-size:11px; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--ed-orange); margin-bottom:12px; }
+    .ed-hero__title { font-family:'Bebas Neue',sans-serif; font-size:clamp(56px,9vw,120px); line-height:0.95; letter-spacing:0.01em; color:var(--ed-cream); }
+    .ed-hero__sub { margin-top:16px; font-size:14px; line-height:1.6; color:var(--ed-cream); opacity:0.85; max-width:480px; }
+
+    /* INTRO */
+    .ed-intro { max-width:760px; margin:80px auto 0; padding:0 32px; text-align:center; }
+    .ed-intro__label { font-size:11px; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--ed-orange); margin-bottom:20px; }
+    .ed-intro__heading { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,5vw,60px); line-height:1.05; color:var(--ed-ink); margin-bottom:20px; }
+    .ed-intro__body { font-size:14px; line-height:1.8; color:var(--ed-ink); opacity:0.72; }
+    .ed-divider { width:48px; height:1px; background:var(--ed-orange); margin:40px auto; opacity:0.8; }
+
+    /* CARDS */
+    .ed-grid-section { padding:0 32px 0; }
+    .ed-grid { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:480px; gap:16px; max-width:1200px; margin:0 auto; align-items:start; }
+    .ed-card:nth-child(2) { margin-top:60px; }
+    .ed-card { position:relative; overflow:hidden; border-radius:20px; background:#2a2a2a; cursor:pointer; height:100%; transition:transform 0.45s var(--ed-ease); }
+    .ed-card:hover { transform:translateY(-8px); }
+    .ed-card__photo { position:absolute; inset:0; width:100%; height:100%; }
+    .ed-card__photo img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.88); transition:transform 0.7s var(--ed-ease),filter 0.5s; }
+    .ed-card:hover .ed-card__photo img { transform:scale(1.06); filter:brightness(1); }
+    .ed-card__overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(20,18,14,0.92) 0%,rgba(20,18,14,0.55) 35%,rgba(20,18,14,0.12) 65%,transparent 100%); z-index:1; }
+    .ed-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--ed-orange); transform:scaleX(0); transform-origin:left; transition:transform 0.45s var(--ed-ease); z-index:4; border-radius:0 0 20px 20px; }
+    .ed-card:hover::before { transform:scaleX(1); }
+    .ed-card__num { position:absolute; top:20px; right:20px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:0.22em; color:var(--ed-cream); opacity:0; z-index:3; transition:opacity 0.3s; }
+    .ed-card:hover .ed-card__num { opacity:0.7; }
+    .ed-card__info { position:absolute; bottom:0; left:0; right:0; padding:28px 28px 32px; z-index:2; }
+
+    /* card name as link */
+    .ed-card__name { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:0.06em; line-height:1.1; color:var(--ed-cream); text-transform:uppercase; margin-bottom:0; position:relative; display:inline-block; transition:margin-bottom 0.3s; text-decoration:none; }
+    .ed-card__name::after { content:''; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--ed-orange); transition:width 0.4s var(--ed-ease); }
+    .ed-card:hover .ed-card__name::after { width:100%; }
+    .ed-card:hover .ed-card__name { margin-bottom:14px; }
+
+    /* list items as links */
+    .ed-card__list { list-style:none; font-size:12.5px; line-height:1.9; color:rgba(244,241,232,0.75); max-height:0; overflow:hidden; transition:max-height 0.4s var(--ed-ease),opacity 0.35s; opacity:0; }
+    .ed-card:hover .ed-card__list { max-height:220px; opacity:1; }
+    .ed-card__list li { position:relative; padding-left:16px; }
+    .ed-card__list li::before { content:'•'; position:absolute; left:0; color:var(--ed-orange); }
+    .ed-card__list a { color:inherit; text-decoration:none; transition:color 0.2s; }
+    .ed-card__list a:hover { color:var(--ed-orange); }
+
+    /* Touch devices have no :hover, so the sub-links above would otherwise
+       stay permanently hidden — show them by default instead */
+    @media (hover: none) {
+      .ed-card__list { max-height:220px; opacity:1; }
+      .ed-card__name { margin-bottom:14px; }
+      .ed-card__name::after { width:100%; }
+    }
+
+    /* CAROUSEL SECTIONS */
+    .ed-carousels-heading { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(28px,4vw,42px); color:var(--ed-ink); text-align:center; margin:96px 0 40px; letter-spacing:0.03em; }
+    .ed-carousels-heading span { color:var(--ed-orange); }
+
+    .pc-section-wrap { padding:0 32px 100px; }
+    .pc-wrap { padding:2rem 1.5rem 2rem; background:#D8D0BD; border-radius:16px; overflow:hidden; margin-top:24px; }
+    .pc-wrap:first-of-type { margin-top:0; }
+    .pc-header { display:flex; align-items:flex-start; justify-content:space-between; padding:0 0 1.5rem; }
+    .pc-header-left h2 { font-family:'Bebas Neue',sans-serif; font-size:22px; font-weight:400; color:#303030; margin:0 0 4px; line-height:1.2; letter-spacing:0.04em; }
+    .pc-header-left p { font-size:12px; color:rgba(48,48,48,0.55); margin:0; line-height:1.5; }
+    .pc-btns { display:flex; gap:8px; flex-shrink:0; margin-top:2px; }
+    .pc-btn { width:40px; height:40px; border-radius:50%; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1; transition:transform 0.15s,background 0.2s; flex-shrink:0; font-family:sans-serif; }
+    .pc-btn.prev { background:#303030; color:#D8D0BD; }
+    .pc-btn.prev:hover { background:#1a1a1a; transform:scale(1.08); }
+    .pc-btn.next { background:#C5630A; color:#D8D0BD; }
+    .pc-btn.next:hover { background:#a04f08; transform:scale(1.08); }
+    .pc-track-wrap { overflow:hidden; cursor:grab; margin:0 -1.5rem; width:calc(100% + 3rem); }
+    .pc-track-wrap:active { cursor:grabbing; }
+    .pc-track { display:flex; gap:14px; width:max-content; }
+    .pc-card { flex-shrink:0; width:calc(100vw - 3rem); max-width:1136px; height:520px; border-radius:20px; overflow:hidden; position:relative; background:#303030; }
+    .pc-card img, .pc-card video { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s ease; pointer-events:none; background:#303030; }
+    .pc-card:hover img, .pc-card:hover video { transform:scale(1.06); }
+    .pc-card::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(48,48,48,0.78) 0%,transparent 55%); border-radius:20px; pointer-events:none; }
+    .pc-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:#C5630A; border-radius:0 0 20px 20px; z-index:3; transform:scaleX(0); transform-origin:left; transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .pc-card:hover::before { transform:scaleX(1); }
+    .pc-card-label { position:absolute; bottom:24px; left:24px; font-size:14px; font-weight:700; letter-spacing:0.18em; color:#D8D0BD; z-index:2; text-transform:uppercase; }
+
+    /* Video-type card badge (small pill, top-left) so it's obvious at a glance
+       which cards play video/reels vs. stills */
+    .pc-card-badge { position:absolute; top:18px; left:18px; z-index:2; display:flex; align-items:center; gap:6px; padding:6px 12px 6px 9px; border-radius:999px; background:rgba(20,18,14,0.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#D8D0BD; }
+    .pc-card-badge i { font-size:9px; color:#C5630A; }
+
+    /* Reel-format carousels: narrower, vertical 9:16 cards for short-form/social video */
+    .pc-wrap--reels .pc-track { align-items:flex-start; }
+    .pc-wrap--reels .pc-card { width:min(280px,62vw); max-width:280px; aspect-ratio:9/16; height:auto; }
+
+    .pc-dot-row { display:flex; gap:6px; justify-content:center; padding-top:1.2rem; }
+    .pc-dot { width:6px; height:6px; border-radius:50%; background:rgba(48,48,48,0.25); transition:background 0.3s,transform 0.3s; }
+    .pc-dot.active { background:#C5630A; transform:scale(1.3); }
+
+    /* FOOTER */
+    .ed-footer { border-top:1px solid var(--ed-line); padding:32px; text-align:center; font-size:12px; color:var(--ed-muted); }
+    .ed-footer a { color:var(--ed-ink); text-decoration:none; font-weight:600; letter-spacing:0.08em; transition:color 0.2s; }
+    .ed-footer a:hover { color:var(--ed-orange); }
+
+    /* REVEAL */
+    .ed-reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease,transform 0.7s var(--ed-ease); }
+    .ed-reveal.ed-visible { opacity:1; transform:translateY(0); }
+
+    /* CLICKABLE MEDIA CURSOR */
+    .ed-card__photo, .pc-card { cursor:zoom-in; }
+
+    /* LIGHTBOX */
+    .ed-lightbox { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; background:rgba(20,17,13,0.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.3s ease; padding:40px; }
+    .ed-lightbox.ed-lightbox--open { opacity:1; pointer-events:auto; }
+    .ed-lightbox__inner { position:relative; max-width:min(1400px,92vw); max-height:88vh; width:100%; display:flex; align-items:center; justify-content:center; }
+    .ed-lightbox__inner img, .ed-lightbox__inner video { max-width:100%; max-height:88vh; width:auto; height:auto; display:block; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.5); transform:scale(0.94); transition:transform 0.3s ease; object-fit:contain; }
+    .ed-lightbox--open .ed-lightbox__inner img, .ed-lightbox--open .ed-lightbox__inner video { transform:scale(1); }
+    .ed-lightbox__close { position:absolute; top:24px; right:28px; width:44px; height:44px; border-radius:50%; border:none; background:rgba(244,241,232,0.12); color:var(--ed-cream); font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background 0.2s,transform 0.2s; z-index:2; }
+    .ed-lightbox__close:hover { background:var(--ed-orange); transform:rotate(90deg); }
+    .ed-lightbox__label { position:absolute; bottom:-36px; left:0; right:0; text-align:center; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ed-cream); opacity:0.75; }
+
+    @media (max-width:900px) {
+      .ed-grid { grid-template-columns:1fr; grid-template-rows:repeat(3,360px); gap:12px; max-width:480px; }
+      .ed-card:nth-child(2) { margin-top:0; }
+      .ed-grid-section { padding:0 20px 0; }
+      .pc-section-wrap { padding:0 20px 64px; }
+      .pc-card { height:380px; }
+    }
+    @media (max-width:600px) {
+      .ed-nav { padding:16px 20px; }
+      .ed-hero__content { padding:0 24px 40px; }
+      .ed-intro { padding:0 20px; }
+      .ed-grid { grid-template-rows:repeat(3,300px); }
+      .pc-card { height:300px; }
+      .ed-lightbox { padding:20px; }
+      .ed-lightbox__close { top:12px; right:12px; }
+    }
+    @media (max-width:380px) {
+      .ed-nav__brand { font-size:12px; }
+      .ed-nav__back { font-size:10px; gap:6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="ed-nav" id="edNav">
+    <a href="index.html" class="ed-nav__brand"><span class="ed-nav__logo">t</span> Trio</a>
+    <a href="Trio.0.html" class="ed-nav__back"><i class="fa-solid fa-arrow-left"></i> Back to Services</a>
+  </nav>
+
+  <header class="ed-hero">
+    <img src="T4.jpeg" alt="Trio editing suite" class="ed-hero__bg" data-drive-key="hero" data-drive-link="" />
+    <div class="ed-hero__overlay"></div>
+    <div class="ed-hero__content">
+      <p class="ed-hero__eyebrow">See What We Can Do</p>
+      <h1 class="ed-hero__title">TRIO STUDIO</h1>
+    </div>
+  </header>
+
+  <div class="ed-intro ed-reveal">
+    <p class="ed-intro__label">Post-Production</p>
+    <h2 class="ed-intro__heading">More Than A Studio</h2>
+    <p class="ed-intro__body">From a quick trim to a fully graded, sound-designed final cut, our editing tiers scale with the scope of your production.</p>
+  </div>
+  <div class="ed-divider"></div>
+
+  <!-- ── CARD GRID ── -->
+  <section class="ed-grid-section">
+    <div class="ed-grid">
+
+      <!-- Card 1 -->
+      <article class="ed-card ed-reveal">
+        <div class="ed-card__photo"><img src="alexandra.jpg" alt="Multiple Shooting Environments" data-drive-key="card_environments" data-drive-link="" /></div>
+        <div class="ed-card__overlay"></div>
+        <span class="ed-card__num">01</span>
+        <div class="ed-card__info">
+          <a href="#section-environments" class="ed-card__name">MULTIPLE SHOOTING ENVIRONMENTS</a>
+          <ul class="ed-card__list">
+            <li><a href="#carousel-podcast">Podcast Setups</a></li>
+            <li><a href="#carousel-talkshows">Talk Shows</a></li>
+            <li><a href="#carousel-product-photo">Product Photography</a></li>
+            <li><a href="#carousel-social">Social Media Content</a></li>
+            <li><a href="#carousel-educational">Educational Content</a></li>
+            <li><a href="#carousel-commercial">Commercial Productions</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="ed-card ed-reveal" style="transition-delay:0.08s">
+        <div class="ed-card__photo"><img src="michael.jpg" alt="Set & Location" data-drive-key="card_sets" data-drive-link="" /></div>
+        <div class="ed-card__overlay"></div>
+        <span class="ed-card__num">02</span>
+        <div class="ed-card__info">
+          <a href="#section-sets" class="ed-card__name">SET & LOCATION</a>
+          <ul class="ed-card__list">
+            <li><a href="#carousel-set-design">Custom Set Design</a></li>
+            <li><a href="#carousel-location-prep">Location Preparation</a></li>
+            <li><a href="#carousel-art-direction">Art Direction</a></li>
+            <li><a href="#carousel-set-construction">Set Construction</a></li>
+            <li><a href="#carousel-location-mgmt">Location Management</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="ed-card ed-reveal" style="transition-delay:0.16s">
+        <div class="ed-card__photo"><img src="priya.jpg" alt="Equipment" data-drive-key="card_equipment" data-drive-link="" /></div>
+        <div class="ed-card__overlay"></div>
+        <span class="ed-card__num">03</span>
+        <div class="ed-card__info">
+          <a href="#section-equipment" class="ed-card__name">EQUIPMENT</a>
+          <ul class="ed-card__list">
+            <li><a href="#carousel-cameras">Cameras</a></li>
+            <li><a href="#carousel-lighting">Lighting</a></li>
+            <li><a href="#carousel-audio">Audio</a></li>
+            <li><a href="#carousel-monitoring">Monitoring & Broadcast</a></li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 1 — MULTIPLE SHOOTING ENVIRONMENTS
+  ══════════════════════════════════════ -->
+  <div class="pc-section-wrap">
+    <h2 class="ed-carousels-heading" id="section-environments">MULTIPLE SHOOTING <span>ENVIRONMENTS</span></h2>
+
+    <div class="pc-wrap" id="carousel-podcast">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Podcast Setups</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-podcast_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-podcast_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-podcast_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-podcast_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-podcast_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-podcast_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-podcast_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-podcast_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-talkshows">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Talk Shows</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-talkshows_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-product-photo">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Product Photography</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-product-photo_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-social">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Social Media Content</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-social_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-social_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-social_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-social_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-social_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-social_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-social_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-social_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-educational">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Educational Content</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-educational_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-educational_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-educational_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-educational_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-educational_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-educational_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-educational_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-educational_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-commercial">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Commercial Productions</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-commercial_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-commercial_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-commercial_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-commercial_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-commercial_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-commercial_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-commercial_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-commercial_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <!-- ══ SECTION 2 — SET & LOCATION ══ -->
+    <h2 class="ed-carousels-heading" id="section-sets">CUSTOM SETS & <span>LOCATIONS</span></h2>
+
+    <div class="pc-wrap" id="carousel-set-design">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Custom Set Design</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-set-design_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-set-design_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-set-design_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-set-design_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-set-design_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-set-design_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-set-design_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-set-design_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-location-prep">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Location Preparation</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-location-prep_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-art-direction">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Art Direction</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-art-direction_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-set-construction">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Set Construction</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-set-construction_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-location-mgmt">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Location Management</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-location-mgmt_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <!-- ══ SECTION 3 — EQUIPMENT ══ -->
+    <h2 class="ed-carousels-heading" id="section-equipment">EQUIPMENT</h2>
+
+    <div class="pc-wrap" id="carousel-cameras">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Cameras</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-cameras_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-cameras_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-cameras_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-cameras_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-cameras_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-cameras_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-cameras_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-cameras_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-lighting">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Lighting</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-lighting_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-lighting_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-lighting_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-lighting_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-lighting_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-lighting_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-lighting_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-lighting_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-audio">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Audio</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-audio_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-audio_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-audio_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-audio_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-audio_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-audio_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-audio_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-audio_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+    <div class="pc-wrap" id="carousel-monitoring">
+      <div class="pc-header">
+        <div class="pc-header-left"><h2>Monitoring & Broadcast</h2></div>
+        <div class="pc-btns"><button class="pc-btn prev">&#8592;</button><button class="pc-btn next">&#8594;</button></div>
+      </div>
+      <div class="pc-track-wrap"><div class="pc-track">
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_1" data-drive-link=""/><span class="pc-card-label">Film Production</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_2" data-drive-link=""/><span class="pc-card-label">Studio Shoot</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_3" data-drive-link=""/><span class="pc-card-label">Podcast</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_4" data-drive-link=""/><span class="pc-card-label">Photography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_5" data-drive-link=""/><span class="pc-card-label">Cinematography</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_6" data-drive-link=""/><span class="pc-card-label">Commercial</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_7" data-drive-link=""/><span class="pc-card-label">Digital Content</span></div>
+        <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" alt="" data-drive-key="carousel-monitoring_8" data-drive-link=""/><span class="pc-card-label">Set Design</span></div>
+      </div></div>
+      <div class="pc-dot-row"></div>
+    </div>
+
+  </div><!-- end pc-section-wrap -->
+
+  <!-- LIGHTBOX -->
+  <div class="ed-lightbox" id="edLightbox">
+    <div class="ed-lightbox__inner" id="edLightboxInner">
+      <button class="ed-lightbox__close" id="edLightboxClose" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
+  <footer class="ed-footer">
+    <p>&copy; 2026 Trio Production House — <a href="Trio.0.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    // ============================================================
+    // GOOGLE DRIVE LINK HELPER
+    // ============================================================
+    // HOW TO ADD YOUR OWN PHOTOS/VIDEOS — everything happens up in the
+    // HTML above, nothing to edit down here:
+    //
+    // 1. In Google Drive, right-click the file → Share → set to
+    //    "Anyone with the link" → Viewer → click "Copy link".
+    // 2. In the HTML above, find the tag for that image. Every one has
+    //    a data-drive-key="..." label to help you find it (search your
+    //    editor for its name, e.g. "hero", "card_environments",
+    //    "carousel-podcast_1") and a data-drive-link="" right next to it.
+    // 3. Paste your copied link between the quotes of data-drive-link,
+    //    e.g.: data-drive-link="https://drive.google.com/file/d/xxxxx/view"
+    // 4. Save the file and reopen it in a browser.
+    //
+    // Any of these link formats work:
+    //   https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+    //   https://drive.google.com/file/d/FILE_ID/preview
+    //   https://drive.google.com/open?id=FILE_ID
+    //   https://drive.google.com/uc?id=FILE_ID&export=view
+    // A bare file ID with no link also still works.
+    //
+    // NOTE: this uses an unofficial Drive hotlink trick for images that
+    // can occasionally break without warning on high-traffic sites.
+    // ============================================================
+    function extractDriveId(value) {
+      if (!value) return '';
+      const trimmed = value.trim();
+      if (trimmed === '') return '';
+      if (/\/folders\//.test(trimmed)) {
+        console.warn('[Drive] This is a folder link, not a file link — open the file inside the folder and copy its own link instead:', trimmed);
+        return '';
+      }
+      if (!/[\/:]/.test(trimmed)) return trimmed;
+      const patterns = [
+        /\/d\/([a-zA-Z0-9_-]{10,})/,
+        /[?&]id=([a-zA-Z0-9_-]{10,})/
+      ];
+      for (const p of patterns) {
+        const m = trimmed.match(p);
+        if (m) return m[1];
+      }
+      console.warn('[Drive] Could not find a file ID in this link — double-check it was copied from an individual file (Share → Copy link):', trimmed);
+      return '';
+    }
+
+    (function applyDriveLinks() {
+      document.querySelectorAll('[data-drive-link]').forEach(el => {
+        const link = el.getAttribute('data-drive-link');
+        if (!link || link.trim() === '') return;
+        const id = extractDriveId(link);
+        if (!id) return;
+        if (el.tagName === 'IMG') {
+          el.src = `https://lh3.googleusercontent.com/d/${id}=w1600`;
+        }
+      });
+    })();
+
+    // Navbar shrink
+    const edNav = document.getElementById('edNav');
+    window.addEventListener('scroll', () => { edNav.classList.toggle('scrolled', window.scrollY > 60); });
+
+    // Scroll reveal
+    const edObserver = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('ed-visible'); }); }, { threshold: 0.1 });
+    document.querySelectorAll('.ed-reveal').forEach(el => edObserver.observe(el));
+
+    // ============================================================
+    // LIGHTBOX — click any image or video to view it full size
+    // ============================================================
+    (function setupLightbox() {
+      const lightbox = document.getElementById('edLightbox');
+      const inner = document.getElementById('edLightboxInner');
+      const closeBtn = document.getElementById('edLightboxClose');
+
+      function openLightbox(mediaEl) {
+        // Remove any previously shown media (keep the close button)
+        inner.querySelectorAll('img, video, .ed-lightbox__label').forEach(n => n.remove());
+
+        let clone;
+        if (mediaEl.tagName === 'VIDEO') {
+          clone = document.createElement('video');
+          clone.src = mediaEl.currentSrc || mediaEl.src;
+          clone.controls = true;
+          clone.autoplay = true;
+          clone.playsInline = true;
+          if (mediaEl.poster) clone.poster = mediaEl.poster;
+        } else {
+          clone = document.createElement('img');
+          clone.src = mediaEl.currentSrc || mediaEl.src;
+          clone.alt = mediaEl.alt || '';
+        }
+        inner.appendChild(clone);
+
+        // Optional caption pulled from a sibling label, if present
+        const label = mediaEl.closest('.pc-card')?.querySelector('.pc-card-label');
+        if (label && label.textContent.trim()) {
+          const cap = document.createElement('div');
+          cap.className = 'ed-lightbox__label';
+          cap.textContent = label.textContent.trim();
+          inner.appendChild(cap);
+        }
+
+        lightbox.classList.add('ed-lightbox--open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('ed-lightbox--open');
+        document.body.style.overflow = '';
+        // Stop any playing video when closed
+        const vid = inner.querySelector('video');
+        if (vid) vid.pause();
+      }
+
+      // Delegate clicks so this also works for dynamically cloned carousel cards.
+      // Note: .pc-card img/video have pointer-events:none (so drag works), so the
+      // click target is the .pc-card itself, not the media element — look inside it.
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.pc-btn')) return; // don't hijack the prev/next controls
+
+        const card = e.target.closest('.pc-card');
+        if (card) {
+          const media = card.querySelector('img, video');
+          if (media) openLightbox(media);
+          return;
+        }
+
+        const media = e.target.closest('.ed-card__photo img, .ed-hero__bg');
+        if (media) openLightbox(media);
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('ed-lightbox--open')) closeLightbox();
+      });
+    })();
+
+    // Each carousel is fully independent
+    function initCarousel(wrapEl) {
+      const trackWrap = wrapEl.querySelector('.pc-track-wrap');
+      const track     = wrapEl.querySelector('.pc-track');
+      const dotRow    = wrapEl.querySelector('.pc-dot-row');
+      const prevBtn   = wrapEl.querySelector('.pc-btn.prev');
+      const nextBtn   = wrapEl.querySelector('.pc-btn.next');
+      const GAP = 14;
+      const orig = Array.from(track.children);
+      const N = orig.length;
+      orig.forEach(c => track.appendChild(c.cloneNode(true)));
+      orig.forEach(c => track.appendChild(c.cloneNode(true)));
+      orig.forEach((_, i) => { const d = document.createElement('div'); d.className = 'pc-dot' + (i === 0 ? ' active' : ''); dotRow.appendChild(d); });
+      const dots = dotRow.querySelectorAll('.pc-dot');
+
+      // Card width is now fluid (near full page width), so measure it live
+      // instead of relying on a hardcoded pixel value.
+      let CARD = track.children[0].getBoundingClientRect().width + GAP;
+      function recalcCard() { CARD = track.children[0].getBoundingClientRect().width + GAP; }
+      window.addEventListener('resize', recalcCard);
+
+      let x = 0, paused = false, resumeTimer, dragStartX = null, dragStart = null, dragMoved = false;
+      function clamp() { const m = N*CARD; if (x >= m*2) x -= m; if (x < 0) x += m; }
+      function updateDots() { const i = Math.round(x/CARD)%N; dots.forEach((d,j) => d.classList.toggle('active', j===i)); }
+      function render() { clamp(); track.style.transform = `translateX(${-x}px)`; updateDots(); }
+      function tick() { if (!paused) { x += 0.55; render(); } requestAnimationFrame(tick); }
+      function pauseFor(ms) { paused=true; clearTimeout(resumeTimer); resumeTimer=setTimeout(()=>{paused=false;},ms); }
+      function nudge(dir) { pauseFor(4000); const s=x, t0=performance.now(), dur=420; const ease=t=>t<0.5?2*t*t:-1+(4-2*t)*t; const step=now=>{ const p=Math.min((now-t0)/dur,1); x=s+dir*CARD*ease(p); render(); if(p<1)requestAnimationFrame(step); }; requestAnimationFrame(step); }
+      nextBtn.addEventListener('click', () => nudge(1));
+      prevBtn.addEventListener('click', () => nudge(-1));
+      trackWrap.addEventListener('mouseenter', () => pauseFor(999999));
+      trackWrap.addEventListener('mouseleave', () => { clearTimeout(resumeTimer); paused=false; });
+      trackWrap.addEventListener('pointerdown', e => { dragStartX=e.clientX; dragStart=x; paused=true; dragMoved=false; trackWrap.setPointerCapture(e.pointerId); });
+      trackWrap.addEventListener('pointermove', e => { if(dragStartX===null)return; if (Math.abs(e.clientX-dragStartX) > 4) dragMoved = true; x=dragStart+(dragStartX-e.clientX); render(); });
+      trackWrap.addEventListener('pointerup', (e) => {
+        dragStartX=null;
+        pauseFor(2500);
+        // If the pointer barely moved, treat it as a click on the media underneath,
+        // even though pointer capture would otherwise swallow the click event.
+        if (!dragMoved) {
+          const el = document.elementFromPoint(e.clientX, e.clientY);
+          const card = el && el.closest('.pc-card');
+          if (card) card.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        }
+      });
+      tick();
+    }
+
+    document.querySelectorAll('.pc-wrap').forEach(initCarousel);
+  </script>
+</body>
+</html>

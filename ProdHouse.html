@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production House — Trio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* Roc Grotesk is a licensed font — host the actual files (woff2/woff) somewhere
+       on your server or CDN and point the src below at them. Until then, the
+       fallbacks (system sans-serif) will be used automatically. */
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Regular.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Medium.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Bold.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* =====================
+       PAGE-LEVEL TOKENS
+       Prefixed with .ph- so nothing leaks to/from index.html
+       Recolored to match the home page palette
+    ===================== */
+    :root {
+      --ph-bg:     #d8d0bd;
+      --ph-ink:    #303030;
+      --ph-cream:  #f4f1e8;
+      --ph-orange: #c5630a;
+      --ph-muted:  rgba(48,48,48,0.55);
+      --ph-card:   #f4f1e8;
+      --ph-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      background: var(--ph-bg);
+      color: var(--ph-ink);
+      font-family: 'Roc Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* keeps anchor targets from hiding behind the fixed navbar */
+    .ph-carousels-heading,
+    .pc-wrap {
+      scroll-margin-top: 96px;
+    }
+
+    /* =====================
+       NAVBAR
+    ===================== */
+    .ph-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(216, 208, 189, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(48,48,48,0.08);
+      transition: background 0.3s, padding 0.3s;
+    }
+    .ph-nav.scrolled {
+      background: rgba(216, 208, 189, 0.97);
+      padding: 14px 40px;
+    }
+    .ph-nav__brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ph-ink);
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .ph-nav__logo {
+      width: 20px; height: 20px; object-fit: contain;
+    }
+    .ph-nav__back {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ph-ink);
+      text-decoration: none; opacity: 0.7;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, gap 0.2s;
+    }
+    .ph-nav__back:hover { opacity: 1; gap: 12px; color: var(--ph-orange); }
+
+    /* =====================
+       HERO BANNER
+    ===================== */
+    .ph-hero {
+      position: relative;
+      height: 60vh; min-height: 360px;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .ph-hero__bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 8s ease-out;
+    }
+    .ph-hero:hover .ph-hero__bg { transform: scale(1.04); }
+    .ph-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(48,48,48,0.35) 0%, rgba(48,48,48,0.75) 60%, var(--ph-bg) 100%);
+    }
+    .ph-hero__content {
+      position: relative; z-index: 2;
+      padding: 0 48px 56px;
+    }
+    .ph-hero__eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--ph-orange); margin-bottom: 12px;
+    }
+    .ph-hero__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.95; letter-spacing: 0.01em;
+      color: var(--ph-cream);
+    }
+    .ph-hero__sub {
+      margin-top: 16px;
+      font-size: 14px; line-height: 1.6;
+      color: var(--ph-cream); opacity: 0.85;
+      max-width: 480px;
+    }
+
+    /* =====================
+       SECTION INTRO
+    ===================== */
+    .ph-intro {
+      max-width: 760px;
+      margin: 80px auto 0;
+      padding: 0 32px;
+      text-align: center;
+    }
+    .ph-intro__label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--ph-orange); margin-bottom: 20px;
+    }
+    .ph-intro__heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1.05; color: var(--ph-ink);
+      margin-bottom: 20px;
+    }
+    .ph-intro__body {
+      font-size: 14px; line-height: 1.8;
+      color: var(--ph-ink); opacity: 0.72;
+    }
+
+    /* =====================
+       DIVIDER
+    ===================== */
+    .ph-divider {
+      width: 48px; height: 1px;
+      background: var(--ph-orange);
+      margin: 40px auto;
+      opacity: 0.8;
+    }
+
+    /* =====================
+       CARD GRID
+       6 cards, even 3x2 grid so nothing is orphaned/squeezed
+    ===================== */
+    .ph-grid-section {
+      padding: 0 32px 100px;
+    }
+    .ph-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 360px);
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* =====================
+       CARD — full-bleed image with rounded corners
+       and title overlaid at bottom
+    ===================== */
+    .ph-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #2a2a2a;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .ph-card__img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.7s var(--ph-ease), filter 0.5s;
+      filter: brightness(0.88);
+    }
+    .ph-card:hover .ph-card__img {
+      transform: scale(1.06);
+      filter: brightness(1);
+    }
+
+    /* gradient overlay — heavier at bottom for text legibility,
+       and it grows on hover to keep long lists readable */
+    .ph-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20,18,14,0.88) 0%,
+        rgba(20,18,14,0.45) 35%,
+        rgba(20,18,14,0.10) 65%,
+        transparent 100%
+      );
+      transition: background 0.4s;
+    }
+    .ph-card:hover .ph-card__overlay {
+      background: linear-gradient(
+        to top,
+        rgba(20,18,14,0.94) 0%,
+        rgba(20,18,14,0.80) 55%,
+        rgba(20,18,14,0.20) 85%,
+        transparent 100%
+      );
+    }
+
+    /* orange accent line at bottom */
+    .ph-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--ph-orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s var(--ph-ease);
+      z-index: 4;
+      border-radius: 0 0 20px 20px;
+    }
+    .ph-card:hover::before { transform: scaleX(1); }
+
+    /* card number badge */
+    .ph-card__num {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 12px; letter-spacing: 0.22em;
+      color: var(--ph-cream); opacity: 0;
+      z-index: 3;
+      transition: opacity 0.35s;
+    }
+    .ph-card:hover .ph-card__num { opacity: 0.7; }
+
+    /* card body — text pinned to bottom, grows upward on hover */
+    .ph-card__body {
+      position: relative;
+      z-index: 3;
+      padding: 24px 26px 28px;
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+    }
+
+    .ph-card__tag {
+      display: inline-block;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ph-orange);
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.3s 0.05s, transform 0.3s 0.05s;
+    }
+    .ph-card:hover .ph-card__tag { opacity: 1; transform: translateY(0); }
+
+    .ph-card__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px; letter-spacing: 0.06em;
+      color: var(--ph-cream); line-height: 1.1;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      display: block;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ph-card__title:hover { color: var(--ph-orange); }
+
+    /* list of services that appears on hover */
+    .ph-card__desc {
+      list-style: none;
+      font-size: 12px; line-height: 1.5;
+      color: rgba(244,241,232,0.85);
+      max-height: 0; overflow: hidden;
+      margin-top: 0;
+      transition: max-height 0.45s var(--ph-ease), opacity 0.3s, margin-top 0.3s;
+      opacity: 0;
+    }
+    .ph-card__desc li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 4px;
+    }
+    .ph-card__desc li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 7px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--ph-orange);
+    }
+    .ph-card__desc a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ph-card__desc a:hover { color: var(--ph-orange); }
+    /* plain single-line descriptions (no bullet needed) */
+    .ph-card__desc--text li {
+      padding-left: 0;
+    }
+    .ph-card__desc--text li::before { display: none; }
+
+    .ph-card:hover .ph-card__desc {
+      max-height: 220px;
+      opacity: 1;
+      margin-top: 10px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ph-orange) transparent;
+    }
+    .ph-card__desc::-webkit-scrollbar { width: 4px; }
+    .ph-card__desc::-webkit-scrollbar-thumb { background: var(--ph-orange); border-radius: 4px; }
+
+    /* Touch devices have no :hover, so the tag/list above would otherwise
+       stay permanently hidden — show them by default instead */
+    @media (hover: none) {
+      .ph-card__tag { opacity: 1; transform: translateY(0); }
+      .ph-card__desc {
+        max-height: 220px;
+        opacity: 1;
+        margin-top: 10px;
+        overflow-y: auto;
+      }
+    }
+
+    /* the long full-solutions list runs two columns so it never overflows */
+    .ph-card__desc--dense {
+      column-count: 2;
+      column-gap: 18px;
+    }
+    .ph-card__desc--dense li { break-inside: avoid; }
+
+    /* =====================
+       CAROUSELS HEADING
+    ===================== */
+    .ph-carousels-heading {
+      font-family: Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--ph-ink);
+      text-align: center;
+      margin: 120px 0 40px;
+    }
+    .ph-carousels-heading em { font-style: italic; color: var(--ph-orange); }
+
+    /* =====================
+       PHOTO CAROUSEL
+       Cards now run full page width — one large photo visible at a time
+    ===================== */
+    .pc-wrap { padding: 2rem 1.5rem 2rem; background: #D8D0BD; border-radius: 16px; overflow: hidden; margin-top: 24px; }
+    .pc-wrap:first-of-type { margin-top: 0; }
+    .pc-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 0 0 1.5rem; }
+    .pc-header-left h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 400; color: #303030; margin: 0 0 7px; line-height: 1.2; }
+    .pc-header-left h2 em { font-style: italic; }
+    .pc-header-left p { font-size: 12.5px; color: rgba(48,48,48,0.6); margin: 0; line-height: 1.6; max-width: 340px; }
+    .pc-btns { display: flex; gap: 8px; flex-shrink: 0; margin-top: 2px; }
+    .pc-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; line-height: 1; transition: transform 0.15s, background 0.2s; flex-shrink: 0; font-family: sans-serif; }
+    .pc-btn.prev { background: #303030; color: #D8D0BD; }
+    .pc-btn.prev:hover { background: #1a1a1a; transform: scale(1.08); }
+    .pc-btn.next { background: #C5630A; color: #D8D0BD; }
+    .pc-btn.next:hover { background: #a04f08; transform: scale(1.08); }
+    .pc-track-wrap { overflow: hidden; cursor: grab; margin: 0 -1.5rem; width: calc(100% + 3rem); }
+    .pc-track-wrap:active { cursor: grabbing; }
+    .pc-track { display: flex; gap: 14px; width: max-content; padding: 0 1.5rem; }
+    .pc-card { flex-shrink: 0; width: calc(100vw - 3rem); max-width: 1136px; height: 520px; border-radius: 20px; overflow: hidden; position: relative; background: #303030; }
+    .pc-card img, .pc-card video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; pointer-events: none; background: #303030; }
+    .pc-card:hover img, .pc-card:hover video { transform: scale(1.06); }
+    .pc-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(48,48,48,0.78) 0%, transparent 55%); border-radius: 20px; pointer-events: none; }
+    .pc-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #C5630A; border-radius: 0 0 20px 20px; z-index: 3; transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .pc-card:hover::before { transform: scaleX(1); }
+    .pc-card-label { position: absolute; bottom: 24px; left: 24px; font-size: 14px; font-weight: 700; letter-spacing: 0.18em; color: #D8D0BD; z-index: 2; text-transform: uppercase; }
+
+    /* Video-type card badge (small pill, top-left) so it's obvious at a glance
+       which cards play video/reels vs. stills — swap the <video> src for your own file */
+    .pc-card-badge { position: absolute; top: 18px; left: 18px; z-index: 2; display: flex; align-items: center; gap: 6px; padding: 6px 12px 6px 9px; border-radius: 999px; background: rgba(20,18,14,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #D8D0BD; }
+    .pc-card-badge i { font-size: 9px; color: #C5630A; }
+
+    /* Reel-format carousels: narrower, vertical 9:16 cards for short-form/social video —
+       used by .pc-wrap--reels so the flex-track math still works (uniform card width per track) */
+    .pc-wrap--reels .pc-track { align-items: flex-start; }
+    .pc-wrap--reels .pc-card { width: min(280px, 62vw); max-width: 280px; aspect-ratio: 9 / 16; height: auto; }
+
+    .pc-dot-row { display: flex; gap: 6px; justify-content: center; padding-top: 1.2rem; }
+    .pc-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(48,48,48,0.25); transition: background 0.3s, transform 0.3s; }
+    .pc-dot.active { background: #C5630A; transform: scale(1.3); }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    .ph-footer {
+      border-top: 1px solid rgba(48,48,48,0.12);
+      padding: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--ph-muted);
+    }
+    .ph-footer a {
+      color: var(--ph-ink); text-decoration: none;
+      font-weight: 600; letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .ph-footer a:hover { color: var(--ph-orange); }
+
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
+    .ph-reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s var(--ph-ease);
+    }
+    .ph-reveal.ph-visible { opacity: 1; transform: translateY(0); }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 900px) {
+      .ph-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 300px);
+        gap: 10px;
+      }
+      .pc-card { height: 380px; }
+      .pc-wrap--reels .pc-card { height: auto; }
+    }
+    @media (max-width: 600px) {
+      .ph-nav { padding: 16px 20px; }
+      .ph-hero__content { padding: 0 24px 40px; }
+      .ph-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, 300px);
+        gap: 10px;
+      }
+      .ph-grid-section { padding: 0 16px 64px; }
+      .ph-intro { padding: 0 20px; }
+      .pc-card { height: 300px; }
+      .pc-wrap--reels .pc-card { height: auto; width: min(220px, 68vw); }
+    }
+    @media (max-width: 380px) {
+      .ph-nav__brand { font-size: 12px; }
+      .ph-nav__back { font-size: 10px; gap: 6px; }
+    }
+
+    /* =====================
+       LIGHTBOX (click any image/video to open it enlarged)
+    ===================== */
+    .ph-lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(20,18,14,0.92);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 60px 40px;
+      cursor: zoom-out;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .ph-lightbox.ph-lightbox--open { display: flex; }
+    .ph-lightbox__content {
+      max-width: 92vw; max-height: 88vh;
+      display: flex; align-items: center; justify-content: center;
+      cursor: default;
+    }
+    .ph-lightbox__content img,
+    .ph-lightbox__content video {
+      max-width: 92vw; max-height: 88vh;
+      width: auto; height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    /* Google Drive video playback in the lightbox: raw <video src> pointed at a
+       Drive "download" URL is unreliable (quota limits, no range-request support,
+       occasional virus-scan interstitial), so Drive-sourced videos are shown here
+       using Google's own official embeddable player instead — that one is stable. */
+    .ph-lightbox__content iframe {
+      width: min(1200px, 92vw);
+      aspect-ratio: 16 / 9;
+      max-height: 88vh;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      background: #000;
+    }
+    .ph-lightbox__close {
+      position: fixed; top: 24px; right: 28px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: none; background: rgba(244,241,232,0.15);
+      color: var(--ph-cream); font-size: 24px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 1001;
+    }
+    .ph-lightbox__close:hover { background: var(--ph-orange); transform: scale(1.06); }
+
+    /* clickable cursor affordance on card media */
+    .ph-card__img, .pc-card img, .pc-card video { cursor: zoom-in; }
+    @media (max-width: 600px) {
+      .ph-lightbox { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="ph-nav" id="phNav">
+    <a href="index.html" class="ph-nav__brand">
+      <img src="images/T.jpg" data-drive-key="img_trio_logo" data-drive-link="" alt="Trio logo" class="ph-nav__logo" />
+      Trio
+    </a>
+    <a href="Trio.0.html" class="ph-nav__back">
+      <i class="fa-solid fa-arrow-left"></i> Back to Services
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="ph-hero">
+    <img src="images/T0.jpg" data-drive-key="img_production_house" data-drive-link="" alt="Production House" class="ph-hero__bg" />
+    <div class="ph-hero__overlay"></div>
+    <div class="ph-hero__content">
+      <p class="ph-hero__eyebrow">What We Do</p>
+      <h1 class="ph-hero__title">Production<br>House</h1>
+      <p class="ph-hero__sub">Advertising, commercials, films, series — from concept to final delivery.</p>
+    </div>
+  </header>
+
+  <!-- Intro -->
+  <div class="ph-intro ph-reveal">
+    <p class="ph-intro__label">Our Work</p>
+    <h2 class="ph-intro__heading">Advertising &amp; Commercials</h2>
+    <p class="ph-intro__body">
+      We provide comprehensive production services covering a wide range of media and content formats.
+      Whether your project is a commercial campaign, short film, television program, podcast, digital content
+      series, or commercial photoshoot — our team manages the entire process from concept to final delivery.
+    </p>
+  </div>
+
+  <div class="ph-divider"></div>
+
+  <!-- Card Grid -->
+  <section class="ph-grid-section">
+    <div class="ph-grid">
+
+      <!-- Card 1 -->
+      <article class="ph-card ph-reveal">
+        <img class="ph-card__img" src="images/alexandra.jpg" data-drive-key="img_bts" data-drive-link="" alt="BTS" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">01</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Behind The Scenes</span>
+          <a class="ph-card__title" href="#sec-advertising-and-commercials">ADVERTISING & COMMERCIALS</a>
+          <ul class="ph-card__desc">
+            <li><a href="#carousel-tv-commercials">TV Commercials</a></li>
+            <li><a href="#carousel-digital-campaigns">Digital Campaigns</a></li>
+            <li><a href="#carousel-product-launch-campaigns">Product Launch Campaigns</a></li>
+            <li><a href="#carousel-brand-campaigns">Brand Campaigns</a></li>
+            <li><a href="#carousel-promotional-videos">Promotional Videos</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="ph-card ph-reveal" style="transition-delay:0.08s">
+        <img class="ph-card__img" src="images/michael.jpg" data-drive-key="img_our_work" data-drive-link="" alt="Our Work" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">02</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Portfolio</span>
+          <a class="ph-card__title" href="#sec-films-series-and-sketches">FILMS, SERIES & SKETCHES</a>
+          <ul class="ph-card__desc ph-card__desc--text">
+            <li><a href="#sec-films-series-and-sketches">Production services from concept creation to final delivery.</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="ph-card ph-reveal" style="transition-delay:0.16s">
+        <img class="ph-card__img" src="images/priya.jpg" data-drive-key="img_commercials" data-drive-link="" alt="Commercials" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">03</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Advertising</span>
+          <a class="ph-card__title" href="#sec-social-media-content">SOCIAL MEDIA CONTENT</a>
+          <ul class="ph-card__desc">
+            <li><a href="#carousel-reels-production">Reels Production</a></li>
+            <li><a href="#carousel-short-form-content">Short-Form Content</a></li>
+            <li><a href="#carousel-influencer-content">Influencer Content</a></li>
+            <li><a href="#carousel-social-media-campaigns">Social Media Campaigns</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="ph-card ph-reveal" style="transition-delay:0.24s">
+        <img class="ph-card__img" src="images/alexandra.jpg" data-drive-key="img_films_series" data-drive-link="" alt="Films & Series" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">04</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Brand Campaigns</span>
+          <a class="ph-card__title" href="#sec-podcasts-and-programs">PODCASTS & PROGRAMS</a>
+          <ul class="ph-card__desc ph-card__desc--text">
+            <li><a href="#sec-podcasts-and-programs">Complete production environments for podcasts, talk shows, TV programs, and interviews.</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="ph-card ph-reveal" style="transition-delay:0.32s">
+        <img class="ph-card__img" src="images/michael.jpg" data-drive-key="img_photography" data-drive-link="" alt="Photography" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">05</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Stills</span>
+          <a class="ph-card__title" href="#sec-product-photography">PRODUCT PHOTOGRAPHY</a>
+          <ul class="ph-card__desc">
+            <li><a href="#carousel-product-photography">Product Photography</a></li>
+            <li><a href="#carousel-lifestyle-photography">Lifestyle Photography</a></li>
+            <li><a href="#carousel-commercial-photography">Commercial Photography</a></li>
+            <li><a href="#carousel-brand-photography">Brand Photography</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="ph-card ph-reveal" style="transition-delay:0.40s">
+        <img class="ph-card__img" src="images/michael.jpg" data-drive-key="img_full_production" data-drive-link="" alt="Full production" />
+        <div class="ph-card__overlay"></div>
+        <span class="ph-card__num">06</span>
+        <div class="ph-card__body">
+          <span class="ph-card__tag">Full Service</span>
+          <a class="ph-card__title" href="#sec-full-production-solutions">FULL PRODUCTION SOLUTIONS</a>
+          <ul class="ph-card__desc ph-card__desc--dense">
+            <li><a href="#carousel-creative-and-pre-production">Creative Development</a></li>
+            <li><a href="#carousel-creative-and-pre-production">Script Writing</a></li>
+            <li><a href="#carousel-creative-and-pre-production">Casting</a></li>
+            <li><a href="#carousel-production">Production Management</a></li>
+            <li><a href="#carousel-creative-and-pre-production">Location Scouting</a></li>
+            <li><a href="#carousel-creative-and-pre-production">Set Design</a></li>
+            <li><a href="#carousel-production">Filming</a></li>
+            <li><a href="#carousel-production">Photography</a></li>
+            <li><a href="#carousel-post-production">Editing</a></li>
+            <li><a href="#carousel-post-production">Motion Graphics</a></li>
+            <li><a href="#carousel-post-production">Color Grading</a></li>
+            <li><a href="#carousel-post-production">Sound Design</a></li>
+            <li><a href="#carousel-post-production">Final Delivery</a></li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <h2 class="ph-carousels-heading" id="sec-advertising-and-commercials">ADVERTISING &amp; <em>COMMERCIALS</em></h2>
+
+  <div class="pc-wrap" id="carousel-tv-commercials">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>TV Commercials</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/14IDE9tgmoUxxqtvyDsoxCCH9NrtKiPv7/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Vertical Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_hero_shot" data-drive-link="" alt="Hero shot"/><span class="pc-card-label">Hero Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_audience_reveal" data-drive-link="" alt="Audience reveal"/><span class="pc-card-label">Audience Reveal</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_high_impact_production" data-drive-link="" alt="High-impact production"/><span class="pc-card-label">High-Impact Production</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-digital-campaigns">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Digital Campaigns</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_launch_event" data-drive-link="" alt="Launch event"/><span class="pc-card-label">Launch Event</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_hero_shot" data-drive-link="" alt="Hero shot"/><span class="pc-card-label">Hero Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_audience_reveal" data-drive-link="" alt="Audience reveal"/><span class="pc-card-label">Audience Reveal</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_high_impact_production" data-drive-link="" alt="High-impact production"/><span class="pc-card-label">High-Impact Production</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-product-launch-campaigns">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Product Launch Campaigns</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_launch_event" data-drive-link="" alt="Launch event"/><span class="pc-card-label">Launch Event</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_hero_shot" data-drive-link="" alt="Hero shot"/><span class="pc-card-label">Hero Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_audience_reveal" data-drive-link="" alt="Audience reveal"/><span class="pc-card-label">Audience Reveal</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_high_impact_production" data-drive-link="" alt="High-impact production"/><span class="pc-card-label">High-Impact Production</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-brand-campaigns">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Brand Campaigns</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_brand_storytelling" data-drive-link="" alt="Brand storytelling"/><span class="pc-card-label">Brand Storytelling</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_identity_shoot" data-drive-link="" alt="Identity shoot"/><span class="pc-card-label">Identity Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_brand_film" data-drive-link="" alt="Brand film"/><span class="pc-card-label">Brand Film</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_campaign_concept" data-drive-link="" alt="Campaign concept"/><span class="pc-card-label">Campaign Concept</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-promotional-videos">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Promotional Videos</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/14IDE9tgmoUxxqtvyDsoxCCH9NrtKiPv7/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Vertical Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_editorial_shoot" data-drive-link="" alt="Editorial shoot"/><span class="pc-card-label">Editorial Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_e_commerce_campaign" data-drive-link="" alt="E-commerce campaign"/><span class="pc-card-label">E-Commerce Campaign</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_brand_identity_shoot" data-drive-link="" alt="Brand identity shoot"/><span class="pc-card-label">Brand Identity Shoot</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+    <h2 class="ph-carousels-heading" id="sec-films-series-and-sketches">FILMS, SERIES &amp; <em>SKETCHES</em></h2>
+
+  <div class="pc-wrap" id="carousel-short-films">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Short Films</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_short_film_scene" data-drive-link="" alt="Short film scene"/><span class="pc-card-label">Short Film Scene</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_narrative_shoot" data-drive-link="" alt="Narrative shoot"/><span class="pc-card-label">Narrative Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_creative_team" data-drive-link="" alt="Creative team"/><span class="pc-card-label">Creative Team</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_end_to_end_production" data-drive-link="" alt="End to end production"/><span class="pc-card-label">End-To-End Production</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-series">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Series</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_episodic_series" data-drive-link="" alt="Episodic series"/><span class="pc-card-label">Episodic Series</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_multi_camera_set" data-drive-link="" alt="Multi camera set"/><span class="pc-card-label">Multi-Camera Set</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_writers_room" data-drive-link="" alt="Writers room"/><span class="pc-card-label">Writers Room</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_season_premiere" data-drive-link="" alt="Season premiere"/><span class="pc-card-label">Season Premiere</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-sketches">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Sketches</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_comedy_bit" data-drive-link="" alt="Comedy bit"/><span class="pc-card-label">Comedy Bit</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_sketch_rehearsal" data-drive-link="" alt="Sketch rehearsal"/><span class="pc-card-label">Sketch Rehearsal</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_studio_set" data-drive-link="" alt="Studio set"/><span class="pc-card-label">Studio Set</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_cast_performance" data-drive-link="" alt="Cast performance"/><span class="pc-card-label">Cast Performance</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-behind-the-scenes">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Behind The Scenes</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_crew_at_work" data-drive-link="" alt="Crew at work"/><span class="pc-card-label">Crew At Work</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_director_briefing" data-drive-link="" alt="Director briefing"/><span class="pc-card-label">Director Briefing</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_lighting_rig" data-drive-link="" alt="Lighting rig"/><span class="pc-card-label">Lighting Rig</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_set_walkthrough" data-drive-link="" alt="Set walkthrough"/><span class="pc-card-label">Set Walkthrough</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+    <h2 class="ph-carousels-heading" id="sec-social-media-content">SOCIAL MEDIA <em>CONTENT</em></h2>
+
+  <!-- REEL FORMAT: vertical 9:16 video cards. Replace each video src="videos/..." with
+       your own reel file (same folder as this page, or update the path). poster="" is the
+       thumbnail shown before the video loads/plays — point it at a frame grab of your reel. -->
+  <div class="pc-wrap pc-wrap--reels" id="carousel-reels-production">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Reels Production</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Vertical Shoot</span></div>
+          <div class="pc-card"><video src="videos/reel-02.mp4" data-drive-key="video_reel_02_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=800&q=80" data-drive-poster-key="poster_reel_02_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Handheld Filming</span></div>
+          <div class="pc-card"><video src="videos/reel-03.mp4" data-drive-key="video_reel_03_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=800&q=80" data-drive-poster-key="poster_reel_03_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Quick Edit</span></div>
+          <div class="pc-card"><video src="videos/reel-04.mp4" data-drive-key="video_reel_04_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80" data-drive-poster-key="poster_reel_04_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Trend Concept</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap pc-wrap--reels" id="carousel-short-form-content">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Short-Form Content</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><video src="videos/short-01.mp4" data-drive-key="video_short_01_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80" data-drive-poster-key="poster_short_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Snappy Cuts</span></div>
+          <div class="pc-card"><video src="videos/short-02.mp4" data-drive-key="video_short_02_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=800&q=80" data-drive-poster-key="poster_short_02_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Micro Storytelling</span></div>
+          <div class="pc-card"><video src="videos/short-03.mp4" data-drive-key="video_short_03_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" data-drive-poster-key="poster_short_03_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Hook-Driven Format</span></div>
+          <div class="pc-card"><video src="videos/short-04.mp4" data-drive-key="video_short_04_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&q=80" data-drive-poster-key="poster_short_04_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span><span class="pc-card-label">Fast Turnaround</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-influencer-content">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Influencer Content</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_creator_collaboration" data-drive-link="" alt="Creator collaboration"/><span class="pc-card-label">Creator Collab</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_talent_direction" data-drive-link="" alt="Talent direction"/><span class="pc-card-label">Talent Direction</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_product_seeding" data-drive-link="" alt="Product seeding"/><span class="pc-card-label">Product Seeding</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_on_location_shoot" data-drive-link="" alt="On location shoot"/><span class="pc-card-label">On-Location Shoot</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-social-media-campaigns">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Social Media Campaigns</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_campaign_planning" data-drive-link="" alt="Campaign planning"/><span class="pc-card-label">Campaign Planning</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_multi_platform_content" data-drive-link="" alt="Multi platform content"/><span class="pc-card-label">Multi-Platform Content</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_content_calendar_shoot" data-drive-link="" alt="Content calendar shoot"/><span class="pc-card-label">Content Calendar</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_launch_push" data-drive-link="" alt="Launch push"/><span class="pc-card-label">Launch Push</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+    <h2 class="ph-carousels-heading" id="sec-podcasts-and-programs">PODCASTS &amp; <em>PROGRAMS</em></h2>
+
+  <div class="pc-wrap" id="carousel-podcast-production">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Podcast Production</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_podcast_studio" data-drive-link="" alt="Podcast studio"/><span class="pc-card-label">Podcast Studio</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_multi_mic_setup" data-drive-link="" alt="Multi mic setup"/><span class="pc-card-label">Multi-Mic Setup</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_episode_recording" data-drive-link="" alt="Episode recording"/><span class="pc-card-label">Episode Recording</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_audio_mixing" data-drive-link="" alt="Audio mixing"/><span class="pc-card-label">Audio Mixing</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-talk-shows">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Talk Shows</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_host_and_guest" data-drive-link="" alt="Host and guest"/><span class="pc-card-label">Host & Guest</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_live_audience_set" data-drive-link="" alt="Live audience set"/><span class="pc-card-label">Live Audience Set</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_panel_discussion" data-drive-link="" alt="Panel discussion"/><span class="pc-card-label">Panel Discussion</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_studio_lighting" data-drive-link="" alt="Studio lighting"/><span class="pc-card-label">Studio Lighting</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-tv-programs">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>TV Programs</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_multi_camera_broadcast" data-drive-link="" alt="Multi camera broadcast"/><span class="pc-card-label">Multi-Camera Broadcast</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_control_room" data-drive-link="" alt="Control room"/><span class="pc-card-label">Control Room</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_segment_filming" data-drive-link="" alt="Segment filming"/><span class="pc-card-label">Segment Filming</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_broadcast_graphics" data-drive-link="" alt="Broadcast graphics"/><span class="pc-card-label">Broadcast Graphics</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-interviews">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Interviews</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_one_on_one_interview" data-drive-link="" alt="One on one interview"/><span class="pc-card-label">One-On-One</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_sit_down_setup" data-drive-link="" alt="Sit down setup"/><span class="pc-card-label">Sit-Down Setup</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_documentary_style" data-drive-link="" alt="Documentary style"/><span class="pc-card-label">Documentary Style</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_lav_mic_setup" data-drive-link="" alt="Lav mic setup"/><span class="pc-card-label">Lav Mic Setup</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+    <h2 class="ph-carousels-heading" id="sec-product-photography">PRODUCT <em>PHOTOGRAPHY</em></h2>
+
+  <div class="pc-wrap" id="carousel-product-photography">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Product Photography</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_studio_product_shot" data-drive-link="" alt="Studio product shot"/><span class="pc-card-label">Studio Product Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_product_lighting_setup" data-drive-link="" alt="Product lighting setup"/><span class="pc-card-label">Lighting Setup</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_detail_shot" data-drive-link="" alt="Detail shot"/><span class="pc-card-label">Detail Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_flat_lay" data-drive-link="" alt="Flat lay"/><span class="pc-card-label">Flat Lay</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-lifestyle-photography">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Lifestyle Photography</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_in_context_shot" data-drive-link="" alt="In context shot"/><span class="pc-card-label">In-Context Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_natural_light_shoot" data-drive-link="" alt="Natural light shoot"/><span class="pc-card-label">Natural Light Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_model_with_product" data-drive-link="" alt="Model with product"/><span class="pc-card-label">Model With Product</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_everyday_scene" data-drive-link="" alt="Everyday scene"/><span class="pc-card-label">Everyday Scene</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-commercial-photography">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Commercial Photography</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_ad_ready_shot" data-drive-link="" alt="Ad ready shot"/><span class="pc-card-label">Ad-Ready Shot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_set_build" data-drive-link="" alt="Set build"/><span class="pc-card-label">Set Build</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_catalog_shoot" data-drive-link="" alt="Catalog shoot"/><span class="pc-card-label">Catalog Shoot</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_retouch_ready" data-drive-link="" alt="Retouch ready"/><span class="pc-card-label">Retouch-Ready</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-brand-photography">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Brand Photography</h2>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_brand_world" data-drive-link="" alt="Brand world"/><span class="pc-card-label">Brand World</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_palette_styling" data-drive-link="" alt="Palette styling"/><span class="pc-card-label">Palette Styling</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_consistent_set" data-drive-link="" alt="Consistent set"/><span class="pc-card-label">Consistent Set</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_gallery_ready" data-drive-link="" alt="Gallery ready"/><span class="pc-card-label">Gallery Ready</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+    <h2 class="ph-carousels-heading" id="sec-full-production-solutions">FULL PRODUCTION <em>SOLUTIONS</em></h2>
+
+  <div class="pc-wrap" id="carousel-creative-and-pre-production">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Creative &amp; Pre-Production</h2>
+        <p>Creative development, script writing, casting, location scouting, set design.</p>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-key="img_concept_board" data-drive-link="" alt="Concept board"/><span class="pc-card-label">Concept Board</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_script_read" data-drive-link="" alt="Script read"/><span class="pc-card-label">Script Read</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_casting_session" data-drive-link="" alt="Casting session"/><span class="pc-card-label">Casting Session</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_location_scout" data-drive-link="" alt="Location scout"/><span class="pc-card-label">Location Scout</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-production">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Production</h2>
+        <p>Filming, photography, and full production management on set.</p>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=1400&q=80" data-drive-key="img_camera_operator" data-drive-link="" alt="Camera operator"/><span class="pc-card-label">Camera Operator</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1400&q=80" data-drive-key="img_set_management" data-drive-link="" alt="Set management"/><span class="pc-card-label">Set Management</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1500160503851-b41d5f0c32d3?w=1400&q=80" data-drive-key="img_lighting_crew" data-drive-link="" alt="Lighting crew"/><span class="pc-card-label">Lighting Crew</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=1400&q=80" data-drive-key="img_full_crew_on_set" data-drive-link="" alt="Full crew on set"/><span class="pc-card-label">Full Crew On Set</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  <div class="pc-wrap" id="carousel-post-production">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>Post-Production</h2>
+        <p>Editing, motion graphics, color grading, sound design, final delivery.</p>
+      </div>
+      <div class="pc-btns">
+        <button class="pc-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="pc-btn next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="pc-track-wrap">
+        <div class="pc-track">
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_editing_bay" data-drive-link="" alt="Editing bay"/><span class="pc-card-label">Editing Bay</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80" data-drive-key="img_color_grading" data-drive-link="" alt="Color grading"/><span class="pc-card-label">Color Grading</span></div>
+          <div class="pc-card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1400&q=80" data-drive-key="img_sound_mixing" data-drive-link="" alt="Sound mixing"/><span class="pc-card-label">Sound Mixing</span></div>
+          <div class="pc-card"><video src="videos/final-cut-01.mp4" data-drive-key="video_final_cut_01_mp4" data-drive-link="" poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1400&q=80" data-drive-poster-key="poster_final_cut_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Video</span><span class="pc-card-label">Final Review</span></div>
+        </div>
+  </div>
+    <div class="pc-dot-row"></div>
+  </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="ph-footer">
+    <p>© 2026 Trio Production House — <a href="Trio.0.html">Back to Home</a></p>
+  </footer>
+
+  <!-- Lightbox: populated by JS when an image/video is clicked -->
+  <div class="ph-lightbox" id="phLightbox">
+    <button class="ph-lightbox__close" id="phLightboxClose" aria-label="Close">&times;</button>
+    <div class="ph-lightbox__content" id="phLightboxContent"></div>
+  </div>
+
+  <script>
+    // =====================================================================
+    // GOOGLE DRIVE MEDIA
+    // Just paste the full Drive share link into data-drive-link (and
+    // data-drive-poster-link for a video's poster image) on any element
+    // below in the HTML. Get the link via: right-click the file in Drive ->
+    // Share -> "Anyone with the link" -> Viewer -> Copy link.
+    // Paste it as-is, e.g.
+    //   data-drive-link="https://drive.google.com/file/d/XXXXX/view?usp=drive_link"
+    // Until you add a link, the existing placeholder image/video keeps showing.
+    //
+    // WHY VIDEOS WORK DIFFERENTLY FROM PHOTOS:
+    // Google Drive isn't a real video CDN — pointing a <video src> straight at
+    // a Drive "download" link is unreliable (view-count throttling, no support
+    // for the byte-range requests browsers need to scrub/loop, and large files
+    // get an interstitial page instead of the raw file). So for videos, the
+    // grid/carousel card keeps showing a static thumbnail (auto-generated by
+    // Drive from the video itself, so it's a real frame, not a random stock
+    // photo) with a play icon — clicking it opens Google's own official
+    // embeddable player in the lightbox, which *does* play reliably.
+    // =====================================================================
+    function extractDriveId(link) {
+      if (!link) return null;
+      let m = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (m) return m[1];
+      m = link.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m) return m[1];
+      return null;
+    }
+
+    // Drive-hosted image URL, used for both <img src> and <video poster>.
+    // Using Drive's /thumbnail endpoint (not lh3.googleusercontent.com/d/) —
+    // the lh3 endpoint often ignores the width hint for plain Drive files and
+    // serves a center-cropped square instead of the full image. This endpoint
+    // reliably returns the full image scaled to the requested width, and it
+    // also works for video files (Drive auto-generates a frame thumbnail).
+    function driveImageUrl(id) {
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
+    }
+
+    // Drive's official embeddable player — used for actual video PLAYBACK
+    // (in the lightbox only). This is the reliable option; see note above.
+    function driveEmbedUrl(id) {
+      return `https://drive.google.com/file/d/${id}/preview`;
+    }
+
+    function resolveDriveMedia() {
+      // Posters first, so the video pass below can tell whether one was
+      // already supplied before falling back to the video's own thumbnail.
+      document.querySelectorAll('[data-drive-poster-link]').forEach(el => {
+        const id = extractDriveId(el.getAttribute('data-drive-poster-link'));
+        if (!id) return;
+        el.poster = driveImageUrl(id);
+        el.dataset.posterResolved = 'true';
+      });
+
+      document.querySelectorAll('[data-drive-link]').forEach(el => {
+        const id = extractDriveId(el.getAttribute('data-drive-link'));
+        if (!id) return; // no link pasted yet -> keep the placeholder src/poster
+
+        if (el.tagName === 'VIDEO') {
+          // Store the ID for the lightbox to build a real player from — do
+          // NOT set el.src to a Drive URL, that's the part that doesn't play.
+          el.dataset.driveId = id;
+          if (!el.dataset.posterResolved) {
+            el.poster = driveImageUrl(id); // frame grab of the video itself
+          }
+        } else {
+          el.src = driveImageUrl(id);
+        }
+      });
+    }
+    resolveDriveMedia(); // must run before wireVideoCard/initCarousel below
+
+    // =====================================================================
+    // LIGHTBOX — click any image or video to open it enlarged.
+    // =====================================================================
+    const phLightbox = document.getElementById('phLightbox');
+    const phLightboxContent = document.getElementById('phLightboxContent');
+    const phLightboxClose = document.getElementById('phLightboxClose');
+
+    function openLightbox(node) {
+      phLightboxContent.innerHTML = '';
+      phLightboxContent.appendChild(node);
+      phLightbox.classList.add('ph-lightbox--open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      const vid = phLightboxContent.querySelector('video');
+      if (vid) vid.pause();
+      phLightbox.classList.remove('ph-lightbox--open');
+      document.body.style.overflow = '';
+      phLightboxContent.innerHTML = ''; // also stops any iframe playback
+    }
+    function openLightboxImage(src, alt) {
+      if (!src) return;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = alt || '';
+      openLightbox(img);
+    }
+    function openLightboxVideo(src, poster) {
+      if (!src) return;
+      const video = document.createElement('video');
+      video.src = src;
+      if (poster) video.poster = poster;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      openLightbox(video);
+    }
+    function openLightboxDriveVideo(id) {
+      const iframe = document.createElement('iframe');
+      iframe.src = driveEmbedUrl(id);
+      iframe.allow = 'autoplay; fullscreen';
+      iframe.allowFullscreen = true;
+      openLightbox(iframe);
+    }
+    function openLightboxForMediaEl(container) {
+      const video = container.querySelector('video');
+      const img = container.querySelector('img');
+      if (video) {
+        if (video.dataset.driveId) openLightboxDriveVideo(video.dataset.driveId);
+        else openLightboxVideo(video.currentSrc || video.src, video.poster);
+      } else if (img) {
+        openLightboxImage(img.currentSrc || img.src, img.alt);
+      }
+    }
+
+    phLightboxClose.addEventListener('click', closeLightbox);
+    phLightbox.addEventListener('click', e => { if (e.target === phLightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // Grid cards (the 6 top cards): click anywhere on the card that isn't a
+    // link (title/list items still navigate normally) opens its image.
+    document.querySelectorAll('.ph-card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        openLightboxForMediaEl(card);
+      });
+    });
+
+    // Navbar shrink
+    const phNav = document.getElementById('phNav');
+    window.addEventListener('scroll', () => {
+      phNav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveal
+    const phObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('ph-visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.ph-reveal').forEach(el => phObserver.observe(el));
+
+    // === Video cards: on devices with real hover (mouse/trackpad) the video
+    // stays paused on its poster and plays on mouseenter/leaves on mouseleave.
+    // Touch devices have no hover event, so instead we just autoplay them
+    // muted+looped (like a reel) — otherwise they'd be stuck on the poster forever.
+    // NOTE: this only affects videos with a real, working src (local/hosted
+    // files). Drive-sourced cards (data-driveId set, no usable src) simply
+    // show their poster/thumbnail here — actual playback happens in the
+    // lightbox on click, see the note at the top of this script. ===
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    function wireVideoCard(video) {
+      if (canHover) {
+        video.pause();
+        const card = video.closest('.pc-card');
+        card.addEventListener('mouseenter', () => {
+          if (video.dataset.driveId) return; // no playable inline src — leave the poster showing
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        });
+        card.addEventListener('mouseleave', () => {
+          if (video.dataset.driveId) return;
+          video.pause();
+          video.currentTime = 0;
+        });
+      } else if (!video.dataset.driveId) {
+        video.play().catch(() => {});
+      }
+    }
+    document.querySelectorAll('.pc-card video').forEach(wireVideoCard);
+
+    // === Photo carousels (supports multiple independent instances) ===
+    function initCarousel(wrapEl) {
+      const trackWrap = wrapEl.querySelector('.pc-track-wrap');
+      const track      = wrapEl.querySelector('.pc-track');
+      const dotRow      = wrapEl.querySelector('.pc-dot-row');
+      const prevBtn     = wrapEl.querySelector('.pc-btn.prev');
+      const nextBtn     = wrapEl.querySelector('.pc-btn.next');
+      const GAP = 14;
+
+      const orig = Array.from(track.children);
+      const N = orig.length;
+
+      orig.forEach(c => track.appendChild(c.cloneNode(true)));
+      orig.forEach(c => track.appendChild(c.cloneNode(true)));
+
+      // Re-wire video behavior on the cloned cards too (cloneNode doesn't
+      // carry over addEventListener bindings, and clones need their own play() call)
+      track.querySelectorAll('.pc-card video').forEach(wireVideoCard);
+
+      orig.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'pc-dot' + (i === 0 ? ' active' : '');
+        dotRow.appendChild(d);
+      });
+      const dots = dotRow.querySelectorAll('.pc-dot');
+
+      // Card width is now fluid (near full page width), so measure it live
+      // instead of relying on a hardcoded pixel value.
+      let CARD = track.children[0].getBoundingClientRect().width + GAP;
+      function recalcCard() { CARD = track.children[0].getBoundingClientRect().width + GAP; }
+      window.addEventListener('resize', recalcCard);
+
+      let x = 0, paused = false, resumeTimer, dragStartX = null, dragStart = null;
+      let clickCandidateCard = null, clickStartX = 0, clickStartY = 0;
+
+      function clamp() {
+        const max = N * CARD;
+        if (x >= max * 2) x -= max;
+        if (x < 0) x += max;
+      }
+
+      function updateDots() {
+        const i = Math.round(x / CARD) % N;
+        dots.forEach((d, j) => d.classList.toggle('active', j === i));
+      }
+
+      function render() { clamp(); track.style.transform = `translateX(${-x}px)`; updateDots(); }
+
+      function tick() {
+        if (!paused) { x += 0.55; render(); }
+        requestAnimationFrame(tick);
+      }
+
+      function pauseFor(ms) {
+        paused = true;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => { paused = false; }, ms);
+      }
+
+      function nudge(dir) {
+        pauseFor(4000);
+        const start = x, t0 = performance.now(), dur = 420;
+        const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+        const step = now => {
+          const p = Math.min((now - t0) / dur, 1);
+          x = start + dir * CARD * ease(p);
+          render();
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+
+      nextBtn.addEventListener('click', () => nudge(1));
+      prevBtn.addEventListener('click', () => nudge(-1));
+
+      trackWrap.addEventListener('mouseenter', () => pauseFor(999999));
+      trackWrap.addEventListener('mouseleave', () => { clearTimeout(resumeTimer); paused = false; });
+
+      trackWrap.addEventListener('pointerdown', e => {
+        dragStartX = e.clientX; dragStart = x; paused = true;
+        trackWrap.setPointerCapture(e.pointerId);
+        clickCandidateCard = e.target.closest('.pc-card');
+        clickStartX = e.clientX; clickStartY = e.clientY;
+      });
+      trackWrap.addEventListener('pointermove', e => { if (dragStartX === null) return; x = dragStart + (dragStartX - e.clientX); render(); });
+      trackWrap.addEventListener('pointerup', e => {
+        dragStartX = null; pauseFor(2500);
+        const movedX = Math.abs(e.clientX - clickStartX);
+        const movedY = Math.abs(e.clientY - clickStartY);
+        // small movement = a click/tap, not a drag -> open the lightbox
+        if (clickCandidateCard && movedX < 6 && movedY < 6) {
+          openLightboxForMediaEl(clickCandidateCard);
+        }
+        clickCandidateCard = null;
+      });
+
+      tick();
+    }
+
+    document.querySelectorAll('.pc-wrap').forEach(initCarousel);
+  </script>
+
+</body>
+</html>
