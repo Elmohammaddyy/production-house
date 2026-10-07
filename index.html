@@ -1107,6 +1107,83 @@
     .lightbox-overlay { padding: 24px; }
   }
 
+    /* === NAV DROPDOWN (Services) === */
+    .nav-item { position: relative; display: flex; align-items: center; }
+    .nav-item > a .caret { font-size: 9px; margin-left: 6px; transition: transform 0.3s var(--transition-smooth); }
+    .nav-item:hover > a .caret,
+    .nav-item:focus-within > a .caret { transform: rotate(180deg); }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      min-width: 230px;
+      margin-top: 16px;
+      padding: 8px;
+      background: var(--cream);
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, transform 0.3s var(--transition-smooth), visibility 0.25s;
+      z-index: 110;
+    }
+    /* invisible bridge so the menu doesn't close while the mouse crosses the gap */
+    .dropdown::before { content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px; }
+
+    .nav-item:hover .dropdown,
+    .nav-item:focus-within .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-links .dropdown a {
+      display: block;
+      padding: 12px 16px;
+      border-radius: 10px;
+      white-space: nowrap;
+      opacity: 0.85;
+      letter-spacing: 0.06em;
+      transform: none;
+    }
+    .nav-links .dropdown a::after { display: none; }
+    .nav-links .dropdown a:hover {
+      background: rgba(197,99,10,0.1);
+      color: var(--orange);
+      opacity: 1;
+      letter-spacing: 0.06em;
+      transform: none;
+    }
+
+    /* Mobile drawer: show the two services inline under "Services" */
+    @media (max-width: 900px) {
+      .nav-item { flex-direction: column; align-items: stretch; }
+      .nav-item > a .caret { display: none; }
+      .dropdown {
+        position: static;
+        transform: none;
+        margin-top: 0;
+        min-width: 0;
+        padding: 0 0 0 16px;
+        background: transparent;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+      }
+      .dropdown::before { display: none; }
+      .nav-item:hover .dropdown,
+      .nav-item:focus-within .dropdown { transform: none; }
+      .nav-links .dropdown a {
+        padding: 12px 0;
+        font-size: 13px;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(48,48,48,0.1);
+      }
+      .nav-links .dropdown a:hover { background: transparent; }
+    }
+
   </style>
 </head>
 <body>
@@ -1120,7 +1197,13 @@
     </div>
     <div class="nav-links" id="navLinks">
       <a href="#about">About</a>
-      <a href="#services">Services</a>
+      <div class="nav-item has-dropdown">
+        <a href="#services">Services <i class="fa-solid fa-chevron-down caret"></i></a>
+        <div class="dropdown">
+          <a href="#prodhouse">Trio Production House</a>
+          <a href="#studio">Trio Studio</a>
+        </div>
+      </div>
       <a href="#Gallery">Gallery</a>
       <a href="#team">Team</a>
       <a href="#contact">Contact</a>
@@ -1321,7 +1404,7 @@
     </div>
 
     <div class="team-grid">
-      <article class="team-card reveal">
+      <article class="team-card reveal" id="prodhouse">
         <div class="photo-wrap"><img class="photo" loading="lazy" src="alexandra.jpg" alt="Production House" data-drive-key="service_prodhouse" data-drive-link="https://drive.google.com/file/d/19ZDSWfcOYNmVfFJgq0AOjGsNMjrbX8VQ/view?usp=drive_link" /></div>
         <div class="team-info">
           <h3>TRIO PRODUCTION HOUSE</h3>
@@ -1335,7 +1418,7 @@
       
 
 
-      <article class="team-card reveal" style="transition-delay: 0.3s;">
+      <article class="team-card reveal" id="studio" style="transition-delay: 0.3s;">
         <div class="photo-wrap"><img class="photo" loading="lazy" src="yourimage.jpg" alt="TRIO STUDIO" data-drive-key="service_studio" data-drive-link="https://drive.google.com/file/d/1h8o65Plpxwj9Ttm_w3LfkB_gocl6LCd6/view?usp=drive_link" /></div>
         <div class="team-info">
           <h3>TRIO STUDIO</h3>
