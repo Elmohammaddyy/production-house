@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production House — Trio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Regular.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Regular.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Medium.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Medium.woff') format('woff');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Roc Grotesk';
+      src: url('../fonts/RocGrotesk-Bold.woff2') format('woff2'),
+           url('../fonts/RocGrotesk-Bold.woff') format('woff');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --ph-bg:     #d8d0bd;
+      --ph-ink:    #303030;
+      --ph-cream:  #f4f1e8;
+      --ph-orange: #c5630a;
+      --ph-muted:  rgba(48,48,48,0.55);
+      --ph-card:   #f4f1e8;
+      --ph-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body {
+      background: var(--ph-bg);
+      color: var(--ph-ink);
+      font-family: 'Roc Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .ph-carousels-heading,
+    .pc-wrap { scroll-margin-top: 96px; }
+
+    /* NAVBAR */
+    .ph-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(216, 208, 189, 0.85);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(48,48,48,0.08);
+      transition: background 0.3s, padding 0.3s;
+    }
+    .ph-nav.scrolled { background: rgba(216, 208, 189, 0.97); padding: 14px 40px; }
+    .ph-nav__brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ph-ink);
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .ph-nav__logo { width: 20px; height: 20px; object-fit: contain; }
+    .ph-nav__back {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ph-ink);
+      text-decoration: none; opacity: 0.7;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, gap 0.2s;
+    }
+    .ph-nav__back:hover { opacity: 1; gap: 12px; color: var(--ph-orange); }
+
+    /* HERO */
+    .ph-hero {
+      position: relative; height: 60vh; min-height: 360px;
+      overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .ph-hero__bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transition: transform 8s ease-out;
+    }
+    .ph-hero:hover .ph-hero__bg { transform: scale(1.04); }
+    .ph-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(48,48,48,0.35) 0%, rgba(48,48,48,0.75) 60%, var(--ph-bg) 100%);
+    }
+    .ph-hero__content { position: relative; z-index: 2; padding: 0 48px 56px; }
+    .ph-hero__eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--ph-orange); margin-bottom: 12px;
+    }
+    .ph-hero__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.95; letter-spacing: 0.01em; color: var(--ph-cream);
+    }
+    .ph-hero__sub {
+      margin-top: 16px; font-size: 14px; line-height: 1.6;
+      color: var(--ph-cream); opacity: 0.85; max-width: 480px;
+    }
+
+    /* INTRO */
+    .ph-intro { max-width: 760px; margin: 80px auto 0; padding: 0 32px; text-align: center; }
+    .ph-intro__label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--ph-orange); margin-bottom: 20px;
+    }
+    .ph-intro__heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 60px); line-height: 1.05;
+      color: var(--ph-ink); margin-bottom: 20px;
+    }
+    .ph-intro__body { font-size: 14px; line-height: 1.8; color: var(--ph-ink); opacity: 0.72; }
+
+    .ph-divider { width: 48px; height: 1px; background: var(--ph-orange); margin: 40px auto; opacity: 0.8; }
+
+    /* HEADING */
+    .ph-carousels-heading {
+      font-family: Georgia, serif; font-weight: 400;
+      font-size: clamp(28px, 4vw, 42px); color: var(--ph-ink);
+      text-align: center; margin: 120px 0 40px;
+    }
+    .ph-carousels-heading em { font-style: italic; color: var(--ph-orange); }
+
+    /* =====================
+       STATIC SINGLE-IMAGE SECTION
+       (no sliding, no arrows, no dots)
+    ===================== */
+    .pc-wrap { padding: 2rem 1.5rem 2rem; background: #D8D0BD; border-radius: 16px; overflow: hidden; margin-top: 24px; }
+    .pc-wrap:first-of-type { margin-top: 0; }
+    .pc-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 0 0 1.5rem; }
+    .pc-header-left h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 400; color: #303030; margin: 0 0 7px; line-height: 1.2; }
+    .pc-header-left h2 em { font-style: italic; }
+    .pc-header-left p { font-size: 12.5px; color: rgba(48,48,48,0.6); margin: 0; line-height: 1.6; max-width: 340px; }
+
+    .pc-track { display: flex; justify-content: center; }
+    .pc-card { width: 100%; max-width: 1136px; height: 520px; border-radius: 20px; overflow: hidden; position: relative; background: #303030; }
+    .pc-card img, .pc-card video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; background: #303030; }
+    .pc-card:hover img, .pc-card:hover video { transform: scale(1.06); }
+    .pc-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(48,48,48,0.78) 0%, transparent 55%); border-radius: 20px; pointer-events: none; }
+    .pc-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #C5630A; border-radius: 0 0 20px 20px; z-index: 3; transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .pc-card:hover::before { transform: scaleX(1); }
+    .pc-card-label { position: absolute; bottom: 24px; left: 24px; font-size: 14px; font-weight: 700; letter-spacing: 0.18em; color: #D8D0BD; z-index: 2; text-transform: uppercase; }
+
+    .pc-card-badge { position: absolute; top: 18px; left: 18px; z-index: 2; display: flex; align-items: center; gap: 6px; padding: 6px 12px 6px 9px; border-radius: 999px; background: rgba(20,18,14,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #D8D0BD; }
+    .pc-card-badge i { font-size: 9px; color: #C5630A; }
+
+    /* FOOTER */
+    .ph-footer {
+      border-top: 1px solid rgba(48,48,48,0.12);
+      padding: 32px; text-align: center; font-size: 12px; color: var(--ph-muted);
+    }
+    .ph-footer a { color: var(--ph-ink); text-decoration: none; font-weight: 600; letter-spacing: 0.08em; transition: color 0.2s; }
+    .ph-footer a:hover { color: var(--ph-orange); }
+
+    /* SCROLL REVEAL */
+    .ph-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s var(--ph-ease); }
+    .ph-reveal.ph-visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) { .pc-card { height: 380px; } }
+    @media (max-width: 600px) {
+      .ph-nav { padding: 16px 20px; }
+      .ph-hero__content { padding: 0 24px 40px; }
+      .ph-intro { padding: 0 20px; }
+      .pc-card { height: 300px; }
+    }
+    @media (max-width: 380px) {
+      .ph-nav__brand { font-size: 12px; }
+      .ph-nav__back { font-size: 10px; gap: 6px; }
+    }
+
+    /* LIGHTBOX */
+    .ph-lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(20,18,14,0.92);
+      display: none; align-items: center; justify-content: center;
+      padding: 60px 40px; cursor: zoom-out;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .ph-lightbox.ph-lightbox--open { display: flex; }
+    .ph-lightbox__content { max-width: 92vw; max-height: 88vh; display: flex; align-items: center; justify-content: center; cursor: default; }
+    .ph-lightbox__content img,
+    .ph-lightbox__content video {
+      max-width: 92vw; max-height: 88vh; width: auto; height: auto;
+      display: block; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .ph-lightbox__content iframe {
+      width: min(1200px, 92vw); aspect-ratio: 16 / 9; max-height: 88vh;
+      border: 0; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: #000;
+    }
+    .ph-lightbox__close {
+      position: fixed; top: 24px; right: 28px; width: 44px; height: 44px; border-radius: 50%;
+      border: none; background: rgba(244,241,232,0.15); color: var(--ph-cream);
+      font-size: 24px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s; z-index: 1001;
+    }
+    .ph-lightbox__close:hover { background: var(--ph-orange); transform: scale(1.06); }
+
+    .pc-card img, .pc-card video { cursor: zoom-in; }
+    @media (max-width: 600px) { .ph-lightbox { padding: 24px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="ph-nav" id="phNav">
+    <a href="index.html" class="ph-nav__brand">
+      <img src="images/T.jpg" data-drive-key="img_trio_logo" data-drive-link="" alt="Trio logo" class="ph-nav__logo" />
+      Trio
+    </a>
+    <a href="index.html#services" class="ph-nav__back">
+      <i class="fa-solid fa-arrow-left"></i> Back to Services
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="ph-hero">
+    <img src="images/T0.jpg" data-drive-key="img_production_house" data-drive-link="" alt="Production House" class="ph-hero__bg" />
+    <div class="ph-hero__overlay"></div>
+    <div class="ph-hero__content">
+      <p class="ph-hero__eyebrow">What We Do</p>
+      <h1 class="ph-hero__title">Production<br>House</h1>
+      <p class="ph-hero__sub">Advertising, commercials, films, series — from concept to final delivery.</p>
+    </div>
+  </header>
+
+  <!-- Intro -->
+
+
+  <h2 class="ph-carousels-heading" id="sec-advertising-and-commercials">ADVERTISING &amp; <em>COMMERCIALS</em></h2>
+
+  <div class="pc-wrap" id="carousel-tv-commercials">
+    <div class="pc-header">
+      <div class="pc-header-left">
+        <h2>TV Commercials</h2>
+      </div>
+    </div>
+    <div class="pc-track">
+      <div class="pc-card">
+        <img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1400&q=80" data-drive-key="img_season_premiere" data-drive-link="" alt="Season premiere"/>
+        <span class="pc-card-label">Season Premiere</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ph-intro ph-reveal">
+    <p class="ph-intro__label">Our Work</p>
+    <h2 class="ph-intro__heading">Advertising &amp; Filming</h2>
+    <p class="ph-intro__body">
+      We provide comprehensive production services covering a wide range of media and content formats.
+      Whether your project is a commercial campaign, short film, television program, podcast, digital content
+      series, or commercial photoshoot — our team manages the entire process from concept to final delivery.
+    </p>
+  </div>
+
+  <div class="ph-divider"></div>
+
+  <!-- Footer -->
+  <footer class="ph-footer">
+    <p>© 2026 Trio Production House — <a href="Trio.0.html">Back to Home</a></p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="ph-lightbox" id="phLightbox">
+    <button class="ph-lightbox__close" id="phLightboxClose" aria-label="Close">&times;</button>
+    <div class="ph-lightbox__content" id="phLightboxContent"></div>
+  </div>
+
+  <script>
+    function extractDriveId(link) {
+      if (!link) return null;
+      let m = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (m) return m[1];
+      m = link.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m) return m[1];
+      return null;
+    }
+    function driveImageUrl(id) { return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`; }
+    function driveEmbedUrl(id) { return `https://drive.google.com/file/d/${id}/preview`; }
+
+    function resolveDriveMedia() {
+      document.querySelectorAll('[data-drive-poster-link]').forEach(el => {
+        const id = extractDriveId(el.getAttribute('data-drive-poster-link'));
+        if (!id) return;
+        el.poster = driveImageUrl(id);
+        el.dataset.posterResolved = 'true';
+      });
+      document.querySelectorAll('[data-drive-link]').forEach(el => {
+        const id = extractDriveId(el.getAttribute('data-drive-link'));
+        if (!id) return;
+        if (el.tagName === 'VIDEO') {
+          el.dataset.driveId = id;
+          if (!el.dataset.posterResolved) el.poster = driveImageUrl(id);
+        } else {
+          el.src = driveImageUrl(id);
+        }
+      });
+    }
+    resolveDriveMedia();
+
+    // LIGHTBOX
+    const phLightbox = document.getElementById('phLightbox');
+    const phLightboxContent = document.getElementById('phLightboxContent');
+    const phLightboxClose = document.getElementById('phLightboxClose');
+
+    function openLightbox(node) {
+      phLightboxContent.innerHTML = '';
+      phLightboxContent.appendChild(node);
+      phLightbox.classList.add('ph-lightbox--open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      const vid = phLightboxContent.querySelector('video');
+      if (vid) vid.pause();
+      phLightbox.classList.remove('ph-lightbox--open');
+      document.body.style.overflow = '';
+      phLightboxContent.innerHTML = '';
+    }
+    function openLightboxImage(src, alt) {
+      if (!src) return;
+      const img = document.createElement('img');
+      img.src = src; img.alt = alt || '';
+      openLightbox(img);
+    }
+    function openLightboxVideo(src, poster) {
+      if (!src) return;
+      const video = document.createElement('video');
+      video.src = src;
+      if (poster) video.poster = poster;
+      video.controls = true; video.autoplay = true; video.playsInline = true;
+      openLightbox(video);
+    }
+    function openLightboxDriveVideo(id) {
+      const iframe = document.createElement('iframe');
+      iframe.src = driveEmbedUrl(id);
+      iframe.allow = 'autoplay; fullscreen';
+      iframe.allowFullscreen = true;
+      openLightbox(iframe);
+    }
+    function openLightboxForMediaEl(container) {
+      const video = container.querySelector('video');
+      const img = container.querySelector('img');
+      if (video) {
+        if (video.dataset.driveId) openLightboxDriveVideo(video.dataset.driveId);
+        else openLightboxVideo(video.currentSrc || video.src, video.poster);
+      } else if (img) {
+        openLightboxImage(img.currentSrc || img.src, img.alt);
+      }
+    }
+
+    phLightboxClose.addEventListener('click', closeLightbox);
+    phLightbox.addEventListener('click', e => { if (e.target === phLightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // Click a card to enlarge it
+    document.querySelectorAll('.pc-card').forEach(card => {
+      card.addEventListener('click', () => openLightboxForMediaEl(card));
+    });
+
+    // Navbar shrink
+    const phNav = document.getElementById('phNav');
+    window.addEventListener('scroll', () => {
+      phNav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveal
+    const phObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('ph-visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.ph-reveal').forEach(el => phObserver.observe(el));
+  </script>
+
+</body>
+</html>
