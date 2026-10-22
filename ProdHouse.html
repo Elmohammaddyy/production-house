@@ -545,6 +545,41 @@
     @media (max-width: 600px) {
       .ph-lightbox { padding: 24px; }
     }
+
+    /* =====================================================================
+       FULL MEDIA, SAME SIZE, NO BLACK BARS
+       Every box keeps its fixed size. The WHOLE photo / video thumbnail is
+       shown inside it (object-fit: contain, nothing cropped), and any empty
+       space is filled by a blurred, enlarged copy of the same picture
+       (added automatically by the script) instead of black bars.
+       The page hero banner is left as "cover" on purpose.
+    ===================================================================== */
+    .ph-card__img { object-fit: contain; }
+
+    .pc-card img:not(.bg-blur),
+    .pc-card video {
+      object-fit: contain;
+      background: transparent;
+      position: relative;
+    }
+
+    img.bg-blur {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(22px) brightness(0.85);
+      transform: scale(1.25);
+      pointer-events: none;
+      cursor: default;
+      transition: none;
+    }
+    .ph-card:hover img.bg-blur,
+    .pc-card:hover img.bg-blur {
+      transform: scale(1.25);
+      filter: blur(22px) brightness(0.85);
+    }
   </style>
 </head>
 <body>
@@ -709,10 +744,10 @@
     </div>
     <div class="pc-track-wrap">
         <div class="pc-track">
-          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1FiCZZSVB7Gs8J9zuOxQGg8WqScGv88pe/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span>=</div>
-          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1sl94ewNAoZX76pIIdkLTKRfon8zEqNrk/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span>=</div>
-          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1C4XE8EGZJUv66cimdKcnfcguqLvx9iqc/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span>=</div>
-          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1H1xY-dkXmERAQxT4Vq4Z4cO1ehWmdi8k/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span>=</div>
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1FiCZZSVB7Gs8J9zuOxQGg8WqScGv88pe/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span></div>
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1sl94ewNAoZX76pIIdkLTKRfon8zEqNrk/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span></div>
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1C4XE8EGZJUv66cimdKcnfcguqLvx9iqc/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span></div>
+          <div class="pc-card"><video src="videos/reel-01.mp4" data-drive-key="video_reel_01_mp4" data-drive-link="https://drive.google.com/file/d/1H1xY-dkXmERAQxT4Vq4Z4cO1ehWmdi8k/view?usp=drive_link" poster="https://images.unsplash.com/photo-1536240478700-b869ad10a2eb?w=800&q=80" data-drive-poster-key="poster_reel_01_mp4" data-drive-poster-link="" muted loop playsinline></video><span class="pc-card-badge"><i class="fa-solid fa-play"></i>Reel</span></div>
         </div>
   </div>
     <div class="pc-dot-row"></div>
@@ -1286,6 +1321,27 @@
     resolveDriveMedia(); // must run before wireVideoCard/initCarousel below
 
     // =====================================================================
+    // BLURRED BACKGROUND FILL — behind every photo / video thumbnail, add a
+    // blurred copy of the same picture so the space around the full
+    // (uncropped) media is filled nicely instead of showing black bars.
+    // Runs before the carousels clone their cards, so clones get it too.
+    // =====================================================================
+    (function addBlurBackgrounds() {
+      document.querySelectorAll('.ph-card > img.ph-card__img, .pc-card > img, .pc-card > video').forEach(el => {
+        const src = el.tagName === 'VIDEO'
+          ? (el.getAttribute('poster') || el.poster)
+          : el.getAttribute('src');
+        if (!src) return;
+        const bg = document.createElement('img');
+        bg.className = 'bg-blur';
+        bg.src = src;
+        bg.alt = '';
+        bg.setAttribute('aria-hidden', 'true');
+        el.parentElement.insertBefore(bg, el);
+      });
+    })();
+
+    // =====================================================================
     // LIGHTBOX — click any image or video to open it enlarged.
     // =====================================================================
     const phLightbox = document.getElementById('phLightbox');
@@ -1331,7 +1387,7 @@
     }
     function openLightboxForMediaEl(container) {
       const video = container.querySelector('video');
-      const img = container.querySelector('img');
+      const img = container.querySelector('img:not(.bg-blur)');
       if (video) {
         if (video.dataset.driveId) openLightboxDriveVideo(video.dataset.driveId);
         else openLightboxVideo(video.currentSrc || video.src, video.poster);

@@ -164,6 +164,40 @@
       .ed-nav__brand { font-size:12px; }
       .ed-nav__back { font-size:10px; gap:6px; }
     }
+
+    /* =====================================================================
+       FULL MEDIA, SAME SIZE, NO BLACK BARS
+       Every box keeps its fixed size. The WHOLE photo / video thumbnail is
+       shown inside it (object-fit: contain, nothing cropped), and any empty
+       space is filled by a blurred, enlarged copy of the same picture
+       (added automatically by the script) instead of black bars.
+       The page hero banner is left as "cover" on purpose.
+    ===================================================================== */
+    .ed-card__photo img:not(.bg-blur),
+    .pc-card img:not(.bg-blur),
+    .pc-card video {
+      object-fit: contain;
+      background: transparent;
+      position: relative;
+    }
+
+    img.bg-blur {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(22px) brightness(0.85);
+      transform: scale(1.25);
+      pointer-events: none;
+      cursor: default;
+      transition: none;
+    }
+    .ed-card:hover .ed-card__photo img.bg-blur,
+    .pc-card:hover img.bg-blur {
+      transform: scale(1.25);
+      filter: blur(22px) brightness(0.85);
+    }
   </style>
 </head>
 <body>
@@ -602,6 +636,27 @@
       });
     })();
 
+    // ============================================================
+    // BLURRED BACKGROUND FILL — behind every photo / video thumbnail, add
+    // a blurred copy of the same picture so the space around the full
+    // (uncropped) media is filled nicely instead of showing black bars.
+    // Runs before the carousels clone their cards, so clones get it too.
+    // ============================================================
+    (function addBlurBackgrounds() {
+      document.querySelectorAll('.ed-card__photo > img, .pc-card > img, .pc-card > video').forEach(el => {
+        const src = el.tagName === 'VIDEO'
+          ? (el.getAttribute('poster') || el.poster)
+          : el.getAttribute('src');
+        if (!src) return;
+        const bg = document.createElement('img');
+        bg.className = 'bg-blur';
+        bg.src = src;
+        bg.alt = '';
+        bg.setAttribute('aria-hidden', 'true');
+        el.parentElement.insertBefore(bg, el);
+      });
+    })();
+
     // Navbar shrink
     const edNav = document.getElementById('edNav');
     window.addEventListener('scroll', () => { edNav.classList.toggle('scrolled', window.scrollY > 60); });
@@ -666,7 +721,7 @@
 
         const card = e.target.closest('.pc-card');
         if (card) {
-          const media = card.querySelector('img, video');
+          const media = card.querySelector('img:not(.bg-blur), video');
           if (media) openLightbox(media);
           return;
         }
