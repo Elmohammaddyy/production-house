@@ -1195,6 +1195,47 @@
       .nav-links .dropdown a:hover { background: transparent; }
     }
 
+    /* ===== FULL PHOTOS, NO CROPPING, NO EMPTY BARS =====
+       Each box now takes the natural shape of its photo: the image fills
+       the full width of the box and the box height adjusts automatically.
+       So the whole photo shows and there are no black spaces.
+       (The hero image is intentionally left as "cover" because it must
+       fill the whole screen.) */
+
+    /* All boxes keep ONE fixed size (same for every photo).
+       Inside each box the WHOLE photo is shown (object-fit: contain) and the
+       empty space is filled with a blurred, enlarged copy of the same photo
+       (added automatically by the script), so there are no black bars. */
+    .photo-wrap, .strip-item, .mc-card { background: transparent; }
+
+    .team-card .photo-wrap > img.photo,
+    .strip-item > img:not(.bg-blur),
+    .mc-card > img:not(.bg-blur) {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    img.bg-blur {
+      position: absolute !important;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      filter: blur(22px) brightness(0.85);
+      transform: scale(1.25);
+      z-index: 0;
+      pointer-events: none;
+      cursor: default !important;
+    }
+    .team-card:hover img.bg-blur { transform: scale(1.25); filter: blur(22px) brightness(0.85); }
+    .mc-card__overlay { z-index: 2; }
+    .mc-card__badge { z-index: 3; }
+    .team-card .photo-wrap { position: relative; }
+
   </style>
 </head>
 <body>
@@ -1222,7 +1263,6 @@
           <a href="#gallery-studio">Studio Gallery</a>
         </div>
       </div>
-      <a href="#team">Team</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-social">
@@ -1623,6 +1663,25 @@
     })();
 
     // ============================================================
+    // BLURRED BACKGROUND FILL — behind every photo box, add a blurred
+    // copy of the same photo so the space around a full (uncropped)
+    // photo is filled nicely instead of showing black bars.
+    // Runs before the strip is cloned, so cloned items get it too.
+    // ============================================================
+    (function addBlurBackgrounds() {
+      document.querySelectorAll('.photo-wrap > img.photo, .strip-item > img, .mc-card > img').forEach(img => {
+        const src = img.getAttribute('src');
+        if (!src) return;
+        const bg = document.createElement('img');
+        bg.className = 'bg-blur';
+        bg.src = src;
+        bg.alt = '';
+        bg.setAttribute('aria-hidden', 'true');
+        img.parentElement.insertBefore(bg, img);
+      });
+    })();
+
+    // ============================================================
     // LIGHTBOX — click any photo or video to open it enlarged.
     // ============================================================
     const lightboxOverlay = document.getElementById('lightboxOverlay');
@@ -1664,7 +1723,7 @@
         openLightboxVideoEmbed(iframe.src, iframe.title);
         return;
       }
-      const img = container.querySelector('img');
+      const img = container.querySelector('img:not(.bg-blur)');
       if (img && img.getAttribute('src')) {
         openLightboxImage(img.currentSrc || img.src, img.alt);
       }
